@@ -10,7 +10,7 @@ export default function Poster({ animation }) {
           width={300}
           height={600}
           alt="cell"
-          className="group-hover:brightness-50 group-hover:cursor-pointer transition duration-1000 ease-in-out"
+          className="group-hover:brightness-50 group-hover:cursor-pointer transition duration-1000 ease-in-out rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
         />
         <div className="invisible group-hover:visible group-hover:cursor-pointer text-neutral-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <span className="text-3xl">{animation.title}</span>

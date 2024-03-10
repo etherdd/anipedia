@@ -26,14 +26,14 @@ export default function Home() {
   ]
 
   return (
-    <div>
-      <h1>HomePage</h1>
+    <div className="">
+      <p className="text-5xl text-neutral-100">HomePage</p>
+      <div className="text-xl text-neutral-100">Top 10</div>
       <div className="overflow-auto whitespace-nowrap">
         {
           animations.map((animation, idx) => <Poster animation={animation} key={idx}></Poster>)
         }
       </div>
-      
     </div>
   );
 }
