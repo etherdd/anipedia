@@ -1,6 +1,7 @@
-import Poster from "../components/Poster";
+import { NextResponse } from "next/server";
 
-export default function Home() {
+// Search animations.
+export async function GET(request, {params}) {
 
   const animations = [
     {
@@ -25,15 +26,5 @@ export default function Home() {
     },
   ]
 
-  return (
-    <div>
-      <h1>HomePage</h1>
-      <div className="overflow-auto whitespace-nowrap">
-        {
-          animations.map((animation, idx) => <Poster animation={animation} key={idx}></Poster>)
-        }
-      </div>
-      
-    </div>
-  );
+  return NextResponse.json(animations);
 }
