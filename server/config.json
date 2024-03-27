@@ -1,8 +1,8 @@
 {
   "rds_host": "database-1.c1yae68i0hwy.eu-north-1.rds.amazonaws.com",
-  "rds_port": "3306",
-  "rds_user": "etherD",
-  "rds_password": "Ethersql",
+  "rds_port": "",
+  "rds_user": "",
+  "rds_password": "",
   "rds_db": "SWIFTIFY",
   "server_host": "localhost",
   "server_port": "8080"
