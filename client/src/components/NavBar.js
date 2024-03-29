@@ -37,8 +37,8 @@ export default function NavBar() {
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <NavText href='/' text='AniPedia' isMain />
+          <NavText href='/songs' text='search' />
           <NavText href='/albums' text='ALBUMS' />
-          <NavText href='/songs' text='SONGS' />
         </Toolbar>
       </Container>
     </AppBar>
