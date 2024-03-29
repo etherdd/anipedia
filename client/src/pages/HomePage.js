@@ -3,29 +3,19 @@ import { useEffect, useState } from 'react';
 import './HomePage.css';
 
 export default function HomePage() {
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [slideDuration, setSlideDuration] = useState(10);
   const [animationDuration, setAnimationDuration] = useState(30);
 
   const slides = [
-    { src: "https://image.tmdb.org/t/p/w1280/9DUAR7p4SGqt2ISH2lmSzNx3uni.jpg", year: 2016 },
-    { src: "https://image.tmdb.org/t/p/w1280/yDaMQbBfyGzGWKxUsPMxzWVuJlY.jpg", year: 2013 },
-    { src: "https://image.tmdb.org/t/p/w1280/fydUcbkqLyESCFa9U5XKqi8dIVj.jpg", year: 1994 },
-    { src: "https://image.tmdb.org/t/p/w1280/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", year: 2006 }    
+    { src: "https://image.tmdb.org/t/p/w1280/9DUAR7p4SGqt2ISH2lmSzNx3uni.jpg", year: 2006 },
+    { src: "https://image.tmdb.org/t/p/w1280/yDaMQbBfyGzGWKxUsPMxzWVuJlY.jpg", year: 1994 },
+    { src: "https://image.tmdb.org/t/p/w1280/fydUcbkqLyESCFa9U5XKqi8dIVj.jpg", year: 2013 },
+    { src: "https://image.tmdb.org/t/p/w1280/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", year: 2016 }    
   ]
 
-  // Set timer for the animation
   useEffect(() => {
     if (slides.length === 0) return;
     const animationDurationInSecond = 8 * slides.length + 2;
-    const slideDurationInSecond = animationDurationInSecond / slides.length;
-    setSlideDuration(slideDurationInSecond);
     setAnimationDuration(animationDurationInSecond);
-    const interval = setInterval(() => {
-      setSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    }, slideDurationInSecond * 1000);
-
-    return () => clearInterval(interval);
   }, [slides.length]);
 
   const keyframes = `
@@ -47,21 +37,31 @@ export default function HomePage() {
       }
     }
 
-    .year-text { 
-      margin: 0;
-      padding: 0;
-      animation: fadeInFadeOut ${slideDuration}s ease-in-out infinite;
+    @keyframes yearskeyframe {
+      0%, 100% {
+        opacity: 0;
+      }
+      ${100 / animationDuration}% {
+        opacity: 0;
+      }
+      ${300 / animationDuration}% {
+        opacity: 0.6;
+      }
+      ${800 / animationDuration}% {
+        opacity: 0.6;
+      }
+      ${900 / animationDuration}% {
+        opacity: 0;
+      }
+      ${100 - 200 / animationDuration}% {
+        opacity: 0;
+      }
     }
   `
 
   return (
     <div className='homepage'>
       <style>{keyframes}</style>
-      <div className="year">
-        {slides.map((slide, index) => (
-          <p key={index} className={slideIndex === index ? 'year-text' : 'year-text-hide'}>{slide.year}</p>
-        ))}
-      </div>
 
       <p className="unleash-text">
         UNLEASH YOUR
@@ -78,11 +78,20 @@ export default function HomePage() {
         <div className="slideshow-cover"></div>
 
         {slides.map((slide, index) => (
-          <div className="slideshow-image" key={index} style={{
-            backgroundImage: `url('${slide.src}')`,
-            animation: `slideskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
-            zIndex: -index
-          }}>
+          <div>
+            <p className={'year-text'} key={index} style={{
+              animation: `yearskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
+              zIndex: 100
+            }}>
+              {slides[index].year}
+            </p>
+
+            <div className="slideshow-image" key={index} style={{
+              backgroundImage: `url('${slide.src}')`,
+              animation: `slideskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
+              zIndex: -index
+            }}>
+            </div>
           </div>
         ))}
       </div>
