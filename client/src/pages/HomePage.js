@@ -1,76 +1,91 @@
 import { useEffect, useState } from 'react';
-import { Container, Divider, Link } from '@mui/material';
-import { NavLink } from 'react-router-dom';
 
-import LazyTable from '../components/LazyTable';
-import SongCard from '../components/SongCard';
-const config = require('../config.json');
+import './HomePage.css';
 
 export default function HomePage() {
-  // We use the setState hook to persist information across renders (such as the result of our API calls)
-  const [songOfTheDay, setSongOfTheDay] = useState({});
-  // TODO (TASK 13): add a state variable to store the app author (default to '')
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [slideDuration, setSlideDuration] = useState(10);
+  const [animationDuration, setAnimationDuration] = useState(30);
 
-  const [selectedSongId, setSelectedSongId] = useState(null);
-
-  // The useEffect hook by default runs the provided callback after every render
-  // The second (optional) argument, [], is the dependency array which signals
-  // to the hook to only run the provided callback if the value of the dependency array
-  // changes from the previous render. In this case, an empty array means the callback
-  // will only run on the very first render.
-  useEffect(() => {
-    // Fetch request to get the song of the day. Fetch runs asynchronously.
-    // The .then() method is called when the fetch request is complete
-    // and proceeds to convert the result to a JSON which is finally placed in state.
-    fetch(`http://${config.server_host}:${config.server_port}/random`)
-      .then(res => res.json())
-      .then(resJson => setSongOfTheDay(resJson));
-
-    // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-    // Hint: note that the app author is a string, not a JSON object. To convert to text, call res.text() instead of res.json()
-  }, []);
-
-  // Here, we define the columns of the "Top Songs" table. The songColumns variable is an array (in order)
-  // of objects with each object representing a column. Each object has a "field" property representing
-  // what data field to display from the raw data, "headerName" property representing the column label,
-  // and an optional renderCell property which given a row returns a custom JSX element to display in the cell.
-  const songColumns = [
-    {
-      field: 'title',
-      headerName: 'Song Title',
-      renderCell: (row) => <Link onClick={() => setSelectedSongId(row.song_id)}>{row.title}</Link> // A Link component is used just for formatting purposes
-    },
-    {
-      field: 'album',
-      headerName: 'Album Title',
-      renderCell: (row) => <NavLink to={`/albums/${row.album_id}`}>{row.album}</NavLink> // A NavLink component is used to create a link to the album page
-    },
-    {
-      field: 'plays',
-      headerName: 'Plays'
-    },
-  ];
-
-  // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
-  // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
-  // Hint: recall the schema for an album is different from that of a song (see the API docs for /top_albums). How does that impact the "field" parameter and the "renderCell" function for the album title column?
-  const albumColumns = [
-
+  const slides = [
+    { src: "https://image.tmdb.org/t/p/w1280/9DUAR7p4SGqt2ISH2lmSzNx3uni.jpg", year: 2016 },
+    { src: "https://image.tmdb.org/t/p/w1280/yDaMQbBfyGzGWKxUsPMxzWVuJlY.jpg", year: 2013 },
+    { src: "https://image.tmdb.org/t/p/w1280/fydUcbkqLyESCFa9U5XKqi8dIVj.jpg", year: 1994 },
+    { src: "https://image.tmdb.org/t/p/w1280/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", year: 2006 }    
   ]
 
+  // Set timer for the animation
+  useEffect(() => {
+    if (slides.length === 0) return;
+    const animationDurationInSecond = 8 * slides.length + 2;
+    const slideDurationInSecond = animationDurationInSecond / slides.length;
+    setSlideDuration(slideDurationInSecond);
+    setAnimationDuration(animationDurationInSecond);
+    const interval = setInterval(() => {
+      setSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, slideDurationInSecond * 1000);
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  const keyframes = `
+    @keyframes slideskeyframe {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      ${800 / animationDuration}% {
+        opacity: 1;
+      }
+      ${1000 / animationDuration}% {
+        opacity: 0;
+        transform: scale(1);
+      }
+      ${100 - 200 / animationDuration}% {
+        opacity: 0;
+        transform: scale(1.3);
+      }
+    }
+
+    .year-text { 
+      margin: 0;
+      padding: 0;
+      animation: fadeInFadeOut ${slideDuration}s ease-in-out infinite;
+    }
+  `
+
   return (
-    <Container>
-      {/* SongCard is a custom component that we made. selectedSongId && <SongCard .../> makes use of short-circuit logic to only render the SongCard if a non-null song is selected */}
-      {selectedSongId && <SongCard songId={selectedSongId} handleClose={() => setSelectedSongId(null)} />}
-      <h2>Check out your song of the day:&nbsp;
-        <Link onClick={() => setSelectedSongId(songOfTheDay.song_id)}>{songOfTheDay.title}</Link>
-      </h2>
-      <Divider />
-      <h2>Top Songs</h2>
-      <LazyTable route={`http://${config.server_host}:${config.server_port}/top_songs`} columns={songColumns} />
-      <Divider />
-      {/* TODO (TASK 16): add a h2 heading, LazyTable, and divider for top albums. Set the LazyTable's props for defaultPageSize to 5 and rowsPerPageOptions to [5, 10] */}
-      {/* TODO (TASK 17): add a paragraph (<p>text</p>) that displays the value of your author state variable from TASK 13 */}
-    </Container>
+    <div className='homepage'>
+      <style>{keyframes}</style>
+      <div className="year">
+        {slides.map((slide, index) => (
+          <p key={index} className={slideIndex === index ? 'year-text' : 'year-text-hide'}>{slide.year}</p>
+        ))}
+      </div>
+
+      <p className="unleash-text">
+        UNLEASH YOUR
+      </p>
+      <p className="imagination-text">
+        IMAGINATION
+      </p>
+      <p className="welcome-text">
+        Welcome to the world of animation.
+      </p>
+
+      {/* background slideshow */}
+      <div className="slideshow">
+        <div className="slideshow-cover"></div>
+
+        {slides.map((slide, index) => (
+          <div className="slideshow-image" key={index} style={{
+            backgroundImage: `url('${slide.src}')`,
+            animation: `slideskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
+            zIndex: -index
+          }}>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
