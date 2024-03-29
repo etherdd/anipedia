@@ -33,7 +33,7 @@ export default function HomePage() {
       }
       ${100 - 200 / animationDuration}% {
         opacity: 0;
-        transform: scale(1.3);
+        transform: scale(1.24);
       }
     }
 
@@ -78,15 +78,15 @@ export default function HomePage() {
         <div className="slideshow-cover"></div>
 
         {slides.map((slide, index) => (
-          <div>
-            <p className={'year-text'} key={index} style={{
+          <div key={index}>
+            <p className={'year-text'} style={{
               animation: `yearskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
-              zIndex: 100
+              zIndex: 4
             }}>
               {slides[index].year}
             </p>
 
-            <div className="slideshow-image" key={index} style={{
+            <div className="slideshow-image" style={{
               backgroundImage: `url('${slide.src}')`,
               animation: `slideskeyframe ${animationDuration}s linear ${8 * index}s infinite`,
               zIndex: -index
