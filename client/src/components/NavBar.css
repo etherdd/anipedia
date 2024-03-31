@@ -1,0 +1,48 @@
+.navbar {
+    position: fixed;
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    z-index: 400;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    ul li{
+        position: relative;
+        list-style: none;
+        display: inline-block;
+        margin: 0 2vw;
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+        }
+
+        ::after {
+            content: '';
+            height: 1px;
+            width: 0;
+            background: white;
+            position: absolute;
+            left: 0;
+            bottom: 3px;
+            transition: 0.5s;
+        }
+        :hover::after {
+            width: 100%;
+        }
+    }
+}
+
+.logo {
+    width: 120px;
+    cursor: pointer;
+}
+
+.empty-div {
+    width: 120px;
+}
