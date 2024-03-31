@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 connection.connect((err) => err && console.log(err));
 
 /************************
- * ADVANCED INFO ROUTES *
+ * TOP RANK *
  ************************/
 
 const movies = async function(req, res) {
