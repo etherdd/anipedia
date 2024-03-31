@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import SearchComponent from '../components/SearchBar';
+
 
 import './HomePage.css';
 
@@ -72,6 +74,8 @@ export default function HomePage() {
       <p className="welcome-text">
         Welcome to the world of animation.
       </p>
+
+      <SearchComponent />
 
       {/* background slideshow */}
       <div className="slideshow">
