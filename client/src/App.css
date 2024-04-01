@@ -1,0 +1,9 @@
+html {
+    min-height: 100%;
+    background-color: rgb(25, 25, 25);
+    color: white;
+}
+  
+fieldset {
+    border-color: white !important;
+}

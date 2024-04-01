@@ -31,16 +31,16 @@ import './NavBar.css';
 // Here, we define the NavBar. Note that we heavily leverage MUI components
 // to make the component look nice. Feel free to try changing the formatting
 // props to how it changes the look of the component.
-export default function NavBar() {
+export default function NavBar({ selected }) {
   return (
     <div className="navbar">
       <img src={logo} className="logo" alt='logo'></img>
 
       <ul>
-        <li><a href='/' text='HOME' >Home</a></li>
-        <li><a href='/toppicks' >Top Picks</a></li>
-        <li><a href='/directors' >Directors</a></li>
-        <li><a href='/search' >Search</a></li>
+        <li className={selected === '/' && 'navbar-selected-li'}><a href='/' text='HOME'>Home</a></li>
+        <li className={selected === '/toppicks' && 'navbar-selected-li'}><a href='/toppicks' >Top Picks</a></li>
+        <li className={selected === '/directors' && 'navbar-selected-li'}><a href='/directors' >Directors</a></li>
+        <li className={selected === '/search' && 'navbar-selected-li'}><a href='/search' >Search</a></li>
       </ul>
 
       <div className='empty-div'></div>
