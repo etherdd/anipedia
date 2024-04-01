@@ -38,8 +38,8 @@ export default function NavBar({ selected }) {
 
       <ul>
         <li className={selected === '/' && 'navbar-selected-li'}><a href='/' text='HOME'>Home</a></li>
-        <li className={selected === '/toppicks' && 'navbar-selected-li'}><a href='/toppicks' >Top Picks</a></li>
-        <li className={selected === '/directors' && 'navbar-selected-li'}><a href='/directors' >Directors</a></li>
+        <li className={selected === '/top-movies' && 'navbar-selected-li'}><a href='/top-movies'>Top Picks</a></li>
+        <li className={selected === '/top-persons' && 'navbar-selected-li'}><a href='/top-persons'>Directors</a></li>
         <li className={selected === '/search' && 'navbar-selected-li'}><a href='/search' >Search</a></li>
       </ul>
 

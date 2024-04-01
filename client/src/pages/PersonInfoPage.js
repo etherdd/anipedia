@@ -4,6 +4,9 @@ import { Container, Link, Stack, Table, TableBody, TableCell, TableContainer, Ta
 
 import SongCard from '../components/SongCard';
 import { formatDuration, formatReleaseDate } from '../helpers/formatter';
+
+import './PersonInfoPage.css';
+
 const config = require('../config.json');
 
 export default function PersonInfoPage() {
@@ -87,11 +90,14 @@ export default function PersonInfoPage() {
   }, [person_id]);
 
   return (
-    <Container>
-      <h2>This is person page</h2>
-      {/* {console.log(personData)} */}
-      <p>{personData.primaryName}</p>
-      <p>{personData.primaryProfession}</p>
-    </Container>
+    <div className='person-info-page'>
+      <div className='nav-bar-holding-block'></div>
+      <Container>
+        <h2>This is person page</h2>
+        {/* {console.log(personData)} */}
+        <p>{personData.primaryName}</p>
+        <p>{personData.primaryProfession}</p>
+      </Container>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import './TopMoviePage.css';
 
 const config = require('../config.json');
 
@@ -58,19 +59,29 @@ export default function TopMoviePage() {
   }, []);
 
   return (
-    <Container>
-      <h4>Hardcode movie test:</h4>
-      <p>
-        <NavLink to={`/movie/${movieTest.imdb_id}`}>{movieTest.title}</NavLink>
-      </p>
-      <h4>Database movie test</h4>
-      {/* {console.log(movies)} */}
-      {movies.map((movie) =>
-        <p key={movie.imdb_id}>
-          <NavLink to={`/movie/${movie.imdb_id}`}>{movie.title}</NavLink>
+    <div className='top-picks-page'>
+      <div className='nav-bar-holding-block'></div>
+
+      <Container style={{ color: "white", top: "60px" }} >
+
+      
+        <h2 style={{ color: "white" }}>Top 10 Movies</h2>
+        <h4>Hardcode movie test:</h4>
+        <p>
+          <NavLink to={`/movie/${movieTest.imdb_id}`}>{movieTest.title}</NavLink>
         </p>
-      )}
-    </Container>
+        <h4>Database movie test</h4>
+        {/* {console.log(movies)} */}
+        {movies.map((movie) =>
+          <p key={movie.imdb_id}>
+            <NavLink to={`/movie/${movie.imdb_id}`}>{movie.title}</NavLink>
+          </p>
+        )}
+      {/* <h2>Top Albums</h2>
+      <LazyTable route={`http://${config.server_host}:${config.server_port}/top_albums`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5, 10]} />
+      <Divider /> */}
+      </Container>
+    </div>
   );
 
   

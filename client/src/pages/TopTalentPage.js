@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import './TopTalentPage.css';
 
 const config = require('../config.json');
 
@@ -61,19 +62,23 @@ export default function TopTalentPage() {
 
 
   return (
-    <Container>
-      <h4>Hardcode movie test:</h4>
-      <p>
-        <NavLink to={`/person/${personTest.name_id}`}>{personTest.primaryName}</NavLink>
-      </p>
-      <h4>Database person test</h4>
-      {/* {console.log(persons)} */}
-      {persons.map((person) =>
-        <p key={person.name_id}>
-          <NavLink to={`/person/${person.name_id}`}>{person.primaryName}</NavLink>
+    <div className='top-directors-page'>
+      <div className='nav-bar-holding-block'></div>
+      <Container style={{ color: "white", top: "60px"}}>
+        <h2>Top 10 Directors</h2>
+        <h4>Hardcode movie test:</h4>
+        <p>
+          <NavLink to={`/person/${personTest.name_id}`}>{personTest.primaryName}</NavLink>
         </p>
-      )}
-    </Container>
+        <h4>Database person test</h4>
+        {/* {console.log(persons)} */}
+        {persons.map((person) =>
+          <p key={person.name_id}>
+            <NavLink to={`/person/${person.name_id}`}>{person.primaryName}</NavLink>
+          </p>
+        )}
+      </Container>
+    </div>
   );
 
 

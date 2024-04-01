@@ -4,6 +4,9 @@ import { Container, Link, Stack, Table, TableBody, TableCell, TableContainer, Ta
 
 import SongCard from '../components/SongCard';
 import { formatDuration, formatReleaseDate } from '../helpers/formatter';
+
+import './MovieInfoPage.css'
+
 const config = require('../config.json');
 
 export default function MovieInfoPage() {
@@ -87,12 +90,14 @@ export default function MovieInfoPage() {
 
 
   return (
-    <Container>
-      <h2>This is movie page</h2>
-      {/* {console.log(movieData)} */}
-      <p>Title: {movieData.title}</p>
-      <p>{movieData.overview}</p>
-    </Container>
-    
+    <div className='movie-info-page'>
+      <div className='nav-bar-holding-block'></div>
+      <Container style={{ color: "white", top: "60px"}}>
+        <h2>This is movie page</h2>
+        {/* {console.log(movieData)} */}
+        <p>Title: {movieData.title}</p>
+        <p>{movieData.overview}</p>
+      </Container>
+    </div>
   );
 }

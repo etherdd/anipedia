@@ -10,11 +10,6 @@ import TopTalentPage from './pages/TopTalentPage';
 import SearchPage from './pages/SearchPage';
 import PersonInfoPage from './pages/PersonInfoPage'
 import MovieInfoPage from './pages/MovieInfoPage'
-import SearchPage from './pages/SearchPage';
-import TopPicksPage from './pages/TopPicksPage';
-import TopDirectorsPage from './pages/TopDirectorsPage';
-import AnimationInfoPage from './pages/AnimationInfoPage';
-import DirectorInfoPage from './pages/DirectorsInfoPage';
 
 import './App.css';
 
@@ -42,11 +37,6 @@ export default function App() {
       <BrowserRouter>
         
         <Routes>
-          {/* <Route path="/top_movie" element={<TopMoviePage />} />
-          <Route path="/top_person" element={<TopTalentPage />} />
-          <Route path="/movie/:movie_id" element={<MovieInfoPage />} />
-          <Route path="/person/:person_id" element={<PersonInfoPage />} /> */}
-
           <Route path="/" element={
             <>
               <NavBar selected={"/"} />
@@ -59,30 +49,31 @@ export default function App() {
               <SearchPage />
             </>} 
           />
-          <Route path="/toppicks" element={
+          <Route path="/top-movies" element={
             <>
-              <NavBar selected={"/toppicks"} />
-              <TopPicksPage />
+              <NavBar selected={"/top-movies"} />
+              <TopMoviePage />
             </>} 
           />
-          <Route path="/directors" element={
+          <Route path="/top-persons" element={
             <>
-              <NavBar selected={"/directors"} />
-              <TopDirectorsPage />
+              <NavBar selected={"/top-persons"} />
+              {/* <TopDirectorsPage /> */}
+              <TopTalentPage />
             </>} 
           />
-          <Route path="/animation/:animation_id" element={
+          <Route path="/movie/:movie_id" element={
             <>
-              <NavBar selected={"/animation/:animation_id"} />
-              <AnimationInfoPage />
-            </>} 
-          />
-          <Route path="/director/:director_id" element={
+              <NavBar/>
+              <MovieInfoPage />
+            </>
+          } />
+          <Route path="/person/:person_id" element={
             <>
-              <NavBar selected={"/director/:director_id"} />
-              <DirectorInfoPage />
-            </>} 
-          />
+              <NavBar/>
+              <PersonInfoPage />
+            </>
+          } />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
