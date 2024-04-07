@@ -65,7 +65,7 @@ export default function TopMoviePage() {
       <Container style={{ color: "white", top: "60px" }} >
 
       
-        <h2 style={{ color: "white" }}>Top 10 Movies</h2>
+        <h2 style={{ color: "white" }}>Top 10 Animations</h2>
         <h4>Hardcode movie test:</h4>
         <p>
           <NavLink to={`/movie/${movieTest.imdb_id}`}>{movieTest.title}</NavLink>

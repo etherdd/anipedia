@@ -62,7 +62,7 @@ export default function TopTalentPage() {
 
 
   return (
-    <div className='top-directors-page'>
+    <div className='top-talent-page'>
       <div className='nav-bar-holding-block'></div>
       <Container style={{ color: "white", top: "60px"}}>
         <h2>Top 10 Directors</h2>
