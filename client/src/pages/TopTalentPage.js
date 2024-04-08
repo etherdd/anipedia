@@ -55,7 +55,7 @@ export default function TopTalentPage() {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/top_persons`)
+    fetch(`http://${config.server_host}:${config.server_port}/top_persons?tag=personDefault`)
       .then(res => res.json())
       .then(resJson => setPersons(resJson));
   }, []);

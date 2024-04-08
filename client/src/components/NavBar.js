@@ -37,10 +37,10 @@ export default function NavBar({ selected }) {
       <img src={logo} className="logo" alt='logo'></img>
 
       <ul>
-        <li className={selected === '/' && 'navbar-selected-li'}><a href='/' text='HOME'>Home</a></li>
-        <li className={selected === '/top-movies' && 'navbar-selected-li'}><a href='/top-movies'>Top Picks</a></li>
-        <li className={selected === '/top-persons' && 'navbar-selected-li'}><a href='/top-persons'>Directors</a></li>
-        <li className={selected === '/search' && 'navbar-selected-li'}><a href='/search' >Search</a></li>
+        <li className={selected === '/' ? 'navbar-selected-li' : ''}><a href='/' text='HOME'>Home</a></li>
+        <li className={selected === '/top-movies' ? 'navbar-selected-li': ''}><a href='/top-movies'>Top Picks</a></li>
+        <li className={selected === '/top-persons' ? 'navbar-selected-li': ''}><a href='/top-persons'>Directors</a></li>
+        <li className={selected === '/search' ? 'navbar-selected-li' : ''}><a href='/search' >Search</a></li>
       </ul>
 
       <div className='empty-div'></div>

@@ -53,7 +53,7 @@ export default function TopMoviePage() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/top_movies`)
+    fetch(`http://${config.server_host}:${config.server_port}/top_movies?sortBy=rating&tag=japanese`)
       .then(res => res.json())
       .then(resJson => setMovies(resJson));
   }, []);

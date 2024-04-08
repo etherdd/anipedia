@@ -95,14 +95,14 @@ const movies = async function(req, res) {
     }
   } else {
     console.log("Invalid sortBy query parameter");
-    res.json({});
+    res.json([]);
     return;
   }
 
   connection.query(queryString, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
-        res.json({});
+        res.json([]);
       } else {
         res.json(data);
       }
@@ -178,7 +178,7 @@ const personShortFilm = `WITH TOP_10_DIRECTORS AS (SELECT d.directors_id, AVG(m.
   SELECT directors_id, vote, primaryName FROM TOP_10_DIRECTORS t JOIN name n ON t.directors_id = n.name_id;`;
 
 const persons = async function(req, res) {
-  const queryString = "";
+  let queryString = "";
   // Another way to write if.. then.. series using switch().
   switch(req.query.tag) {
     case "personDefault":
@@ -210,7 +210,7 @@ const persons = async function(req, res) {
   connection.query(queryString, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
-        res.json({});
+        res.json([]);
       } else {
         res.json(data);
       }
