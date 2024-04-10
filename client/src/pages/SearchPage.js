@@ -69,7 +69,7 @@ export default function SearchPage() {
       .then(resJson => {
         // DataGrid expects an array of objects with a unique id.
         // To accomplish this, we use a map with spread syntax (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
-        const personWithId = resJson.map((person) => ({ id: person.name_id, ...person }));
+        const personWithId = resJson.map((person) => ({ id: person.imdb_id, ...person }));
         setPersonData(personWithId);
       });
   }
@@ -80,7 +80,7 @@ export default function SearchPage() {
   // instead of loading only the data we need (which is necessary in order to be able to sort by column)
   const columns = [
     { field: 'title', headerName: 'Title', flex: 1, renderCell: (params) => (
-      <NavLink style={{ color: 'grey' }} to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
+      <NavLink style={{ color: 'white' }} to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
     )},
     { field: 'production_countries', width: 150, headerName: 'Country' },
     { field: 'original_language',  width: 100, headerName: 'Language' },
@@ -88,7 +88,12 @@ export default function SearchPage() {
     { field: 'runtime',  width: 100, headerName: 'Runtime' }
   ]
 
-  
+  if (searchType === SEARCH_PERSON){
+    const nameColumn = { field: 'primaryName', headerName: 'Name', flex:0.5, renderCell: (params) => (
+      <NavLink style={{ color: 'white' }} to={`/person/${params.row.name_id}`}>{params.value}</NavLink>
+  )}
+    columns.unshift(nameColumn);
+  }
 
   // This component makes uses of the Grid component from MUI (https://mui.com/material-ui/react-grid/).
   // The Grid component is super simple way to create a page layout. Simply make a <Grid container> tag
@@ -116,8 +121,9 @@ export default function SearchPage() {
               label="Search Person" 
               style={{color: searchType === SEARCH_PERSON ? 'white' : 'grey'}} 
           />
-          </Tabs>
+        </Tabs>
 
+        {searchType === SEARCH_MOVIE && 
         <Grid container spacing={2} alignItems="center" style={{ marginTop: '10px'}}>
           <Grid item xs={10}>
             <TextField label='Title' value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%", height: '56px' }}/>
@@ -126,7 +132,9 @@ export default function SearchPage() {
             <Button onClick={() => searchMovie() } style={{ color:'white', background: 'grey', left: '50%', transform: 'translateX(-50%)', height: '56px', width: '100%'}}>Search</Button>
           </Grid>
         </Grid>
+        }
 
+        {searchType === SEARCH_PERSON && 
         <Grid container spacing={2} alignItems="center" style={{ marginTop: '10px'}}>
           <Grid item xs={10}>
             <TextField label='Name' value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%", height: '56px' }}/>
@@ -135,15 +143,16 @@ export default function SearchPage() {
             <Button onClick={() => searchPerson() } style={{ color:'white', background: 'grey', left: '50%', transform: 'translateX(-50%)', height: '56px', width: '100%'}}>Search</Button>
           </Grid>
         </Grid>
+        }
         
         <Grid container spacing={2}  style={{ marginTop: '10px'}}>
         <Grid item xs={3}>
             <FormControl style={{ width: "100%"}} >
-              <InputLabel>Country</InputLabel>
+              <InputLabel>Release Country</InputLabel>
               <Select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                label="Country"
+                label="Release Country"
               >
                 <MenuItem value={'all'}>All</MenuItem>
                 <MenuItem value={'Japan'}>Japan</MenuItem>
@@ -222,18 +231,33 @@ export default function SearchPage() {
 
                 
         
-        <h2>Results Movie</h2>
-        {console.log(personData)}
-        {/* Notice how similar the DataGrid component is to our LazyTable! What are the differences? */}
-        <DataGrid
-          rows={data}
-          columns={columns}
-          pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 25]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          autoHeight
-          style={{background: '#333', color: 'white'}}
-        />
+        {searchType === SEARCH_MOVIE && 
+        <>
+          <h2>Results Movie</h2>
+          <DataGrid
+            rows={data}
+            columns={columns}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 25]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            autoHeight
+            style={{background: '#333', color: 'white'}}
+          />
+        </>}
+
+        {searchType === SEARCH_PERSON && 
+        <>
+          <h2>Results Person</h2>
+          <DataGrid
+            rows={personData}
+            columns={columns}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 25]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            autoHeight
+            style={{background: '#333', color: 'white'}}
+          />
+        </>}
       </Container>
     </div>
   );
