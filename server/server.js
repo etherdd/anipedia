@@ -33,8 +33,7 @@ app.get('/top_persons', routesTop.persons);
  * search *
  ********************************/
 app.get('/search_movies', routesSearch.search_movies);
-//app.get('/search_personss', routesSearch.search_persons);
-//TO BE ADDED
+app.get('/search_persons', routesSearch.search_persons);
 
 
 app.listen(config.server_port, () => {

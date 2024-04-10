@@ -50,13 +50,13 @@ export default function SearchPage() {
   // LazyTable component. The big difference is we provide all data to the DataGrid component
   // instead of loading only the data we need (which is necessary in order to be able to sort by column)
   const columns = [
-    { field: 'title', headerName: 'Title', width: 300, renderCell: (params) => (
-        <NavLink to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
+    { field: 'title', headerName: 'Title', flex: 1, renderCell: (params) => (
+      <NavLink style={{ color: 'grey' }} to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
     )},
-    { field: 'production_countries', headerName: 'Country' },
-    { field: 'original_language', headerName: 'Language' },
-    { field: 'release_date', headerName: 'Release date' },
-    { field: 'runtime', headerName: 'Runtime' }
+    { field: 'production_countries', width: 150, headerName: 'Country' },
+    { field: 'original_language',  width: 100, headerName: 'Language' },
+    { field: 'release_date',  width: 120,headerName: 'Release date' },
+    { field: 'runtime',  width: 100, headerName: 'Runtime' }
   ]
 
   // This component makes uses of the Grid component from MUI (https://mui.com/material-ui/react-grid/).
@@ -173,7 +173,7 @@ export default function SearchPage() {
           rowsPerPageOptions={[5, 10, 25]}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           autoHeight
-          style={{color: 'white'}}
+          style={{background: '#333', color: 'white'}}
         />
       </Container>
     </div>
