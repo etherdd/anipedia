@@ -72,17 +72,17 @@ export default function SearchPage() {
       <Container style={{ color: "white", top: "60px"}} >
         <h2>Search Movie</h2>
         <Grid container spacing={2} alignItems="center" >
-          <Grid item xs={8}>
+          <Grid item xs={10}>
             <TextField label='Title' value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%", height: '56px' }}/>
           </Grid>
           <Grid item xs={2}>
-            <Button onClick={() => search() } style={{ left: '50%', transform: 'translateX(-50%)', height: '56px', width: '80%'}}>Search</Button>
+            <Button onClick={() => search() } style={{ color:'white', background: 'grey', left: '50%', transform: 'translateX(-50%)', height: '56px', width: '100%'}}>Search</Button>
           </Grid>
         </Grid>
         
-        <Grid container spacing={2} alignItems="center" style={{ marginTop: '10px' }}>
-        <Grid item>
-            <FormControl style={{ minWidth: '120px' }}>
+        <Grid container spacing={2}  style={{ marginTop: '10px'}}>
+        <Grid item xs={3}>
+            <FormControl style={{ width: "100%"}} >
               <InputLabel>Country</InputLabel>
               <Select
                 value={country}
@@ -97,49 +97,9 @@ export default function SearchPage() {
             </FormControl>
           </Grid>
 
-          {/* Release Date Filter */}
-          <Grid item>
-            <TextField
-              label="Start Date"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              style={{ marginRight: '10px' }}
-            />
-            <TextField
-              label="End Date"
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-
-          {/* Runtime Filter */}
-          <Grid item>
-            <TextField
-              label="Min Runtime"
-              type="number"
-              value={minRuntime}
-              onChange={(e) => setMinRuntime(e.target.value)}
-              style={{ marginRight: '10px' }}
-            />
-            <TextField
-              label="Max Runtime"
-              type="number"
-              value={maxRuntime}
-              onChange={(e) => setMaxRuntime(e.target.value)}
-            />
-          </Grid>
-
           {/* Original Language Filter */}
-          <Grid item>
-            <FormControl style={{ minWidth: '120px' }}>
+          <Grid item xs={3}>
+            <FormControl style={{ width: "100%" }}>
               <InputLabel>Language</InputLabel>
               <Select
                 value={originalLanguage}
@@ -152,6 +112,52 @@ export default function SearchPage() {
                 {/* ... other language options */}
               </Select>
             </FormControl>
+          </Grid>
+
+          {/* Release Date Filter */}
+          <Grid item xs={1.5}>
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ marginRight: '10px', width: "100%"  }}
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ width: "100%" }}
+            />
+          </Grid>
+
+          {/* Runtime Filter */}
+          <Grid item xs={1.5}>
+            <TextField
+              label="Min Runtime"
+              type="number"
+              value={minRuntime}
+              onChange={(e) => setMinRuntime(e.target.value)}
+              style={{ marginRight: '10px', width: "100%" }}
+            />
+           </Grid>
+          <Grid item xs={1.5}>
+            <TextField
+              label="Max Runtime"
+              type="number"
+              value={maxRuntime}
+              onChange={(e) => setMaxRuntime(e.target.value)}
+              style={{ width: "100%"  }}
+            />
           </Grid>
 
         </Grid>
