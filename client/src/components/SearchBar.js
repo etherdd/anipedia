@@ -5,7 +5,7 @@ const SearchComponent = () => {
   const title = "";
 
   return (
-    <Grid container spacing={2} style={{ padding: '100px', paddingTop: '30px', paddingBottom: '30px'}}>
+    <Grid container spacing={2} style={{ padding: '100px', paddingTop: '30px', paddingBottom: '0px'}}>
     <Grid item xs={10}>
       <TextField label='Title' value={title} style={{ width: "100%", height: '56px' }}/>
     </Grid>
