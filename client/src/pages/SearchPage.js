@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, Checkbox, Container, FormControlLabel, Grid, Link, Slider, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, Select, MenuItem, Container, Grid, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { NavLink } from 'react-router-dom';
 
-import SongCard from '../components/SongCard';
-import { formatDuration } from '../helpers/formatter';
 import './SearchPage.css';
 
 const config = require('../config.json');
@@ -12,40 +11,37 @@ export default function SearchPage() {
 
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
-  const [selectedSongId, setSelectedSongId] = useState(null);
 
   const [title, setTitle] = useState('');
-  const [duration, setDuration] = useState([60, 660]);
-  const [plays, setPlays] = useState([0, 1100000000]);
-  const [danceability, setDanceability] = useState([0, 1]);
-  const [energy, setEnergy] = useState([0, 1]);
-  const [valence, setValence] = useState([0, 1]);
-  const [explicit, setExplicit] = useState(false);
+  const [country, setCountry] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [minRuntime, setMinRuntime] = useState();
+  const [maxRuntime, setMaxRuntime] = useState();
+  const [originalLanguage, setOriginalLanguage] = useState('');
 
-  useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/search_songs`)
-      .then(res => res.json())
-      .then(resJson => {
-        const songsWithId = resJson.map((song) => ({ id: song.song_id, ...song }));
-        setData(songsWithId);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`http://${config.server_host}:${config.server_port}/search_movies`)
+  //     .then(res => res.json())
+  //     .then(resJson => {
+  //       const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
+  //       setData(moviesWithId);
+  //     });
+  // }, []);
 
   const search = () => {
-    fetch(`http://${config.server_host}:${config.server_port}/search_songs?title=${title}` +
-      `&duration_low=${duration[0]}&duration_high=${duration[1]}` +
-      `&plays_low=${plays[0]}&plays_high=${plays[1]}` +
-      `&danceability_low=${danceability[0]}&danceability_high=${danceability[1]}` +
-      `&energy_low=${energy[0]}&energy_high=${energy[1]}` +
-      `&valence_low=${valence[0]}&valence_high=${valence[1]}` +
-      `&explicit=${explicit}`
+    fetch(`http://${config.server_host}:${config.server_port}/search_movies?title=${title}` +
+      `&production_country=${country}` +
+      `&release_date_start=${startDate}&release_date_end=${endDate}` +
+      `&runtime_min=${minRuntime}&runtime_max=${maxRuntime}` +
+      `&original_language=${originalLanguage}`
     )
       .then(res => res.json())
       .then(resJson => {
         // DataGrid expects an array of objects with a unique id.
         // To accomplish this, we use a map with spread syntax (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
-        const songsWithId = resJson.map((song) => ({ id: song.song_id, ...song }));
-        setData(songsWithId);
+        const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
+        setData(moviesWithId);
       });
   }
 
@@ -55,16 +51,12 @@ export default function SearchPage() {
   // instead of loading only the data we need (which is necessary in order to be able to sort by column)
   const columns = [
     { field: 'title', headerName: 'Title', width: 300, renderCell: (params) => (
-        <Link onClick={() => setSelectedSongId(params.row.song_id)}>{params.value}</Link>
-    ) },
-    { field: 'duration', headerName: 'Duration' },
-    { field: 'plays', headerName: 'Plays' },
-    { field: 'danceability', headerName: 'Danceability' },
-    { field: 'energy', headerName: 'Energy' },
-    { field: 'valence', headerName: 'Valence' },
-    { field: 'tempo', headerName: 'Tempo' },
-    { field: 'key_mode', headerName: 'Key' },
-    { field: 'explicit', headerName: 'Explicit' },
+        <NavLink to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
+    )},
+    { field: 'production_countries', headerName: 'Country' },
+    { field: 'original_language', headerName: 'Language' },
+    { field: 'release_date', headerName: 'Release date' },
+    { field: 'runtime', headerName: 'Runtime' }
   ]
 
   // This component makes uses of the Grid component from MUI (https://mui.com/material-ui/react-grid/).
@@ -78,82 +70,94 @@ export default function SearchPage() {
     <div className='search-page'>
       <div className='nav-bar-holding-block-on-search'></div>
       <Container style={{ color: "white", top: "60px"}} >
-        {selectedSongId && <SongCard songId={selectedSongId} handleClose={() => setSelectedSongId(null)} />}
-        <h2>Search Songs</h2>
-        <Grid container spacing={6} >
+        <h2>Search Movie</h2>
+        <Grid container spacing={2} alignItems="center" >
           <Grid item xs={8}>
-            <TextField label='Title' value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%" }}/>
+            <TextField label='Title' value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%", height: '56px' }}/>
+          </Grid>
+          <Grid item xs={2}>
+            <Button onClick={() => search() } style={{ left: '50%', transform: 'translateX(-50%)', height: '56px', width: '80%'}}>Search</Button>
           </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <FormControlLabel
-            label='Explicit'
-            control={<Checkbox checked={explicit} onChange={(e) => setExplicit(e.target.checked)} />}
-          />
+        
+        <Grid container spacing={2} alignItems="center" style={{ marginTop: '10px' }}>
+        <Grid item>
+            <FormControl style={{ minWidth: '120px' }}>
+              <InputLabel>Country</InputLabel>
+              <Select
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                label="Country"
+              >
+                <MenuItem value={'all'}>All</MenuItem>
+                <MenuItem value={'Japan'}>Japan</MenuItem>
+                <MenuItem value={'USA'}>USA</MenuItem>
+                {/* ... other country options */}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {/* Release Date Filter */}
+          <Grid item>
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ marginRight: '10px' }}
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+
+          {/* Runtime Filter */}
+          <Grid item>
+            <TextField
+              label="Min Runtime"
+              type="number"
+              value={minRuntime}
+              onChange={(e) => setMinRuntime(e.target.value)}
+              style={{ marginRight: '10px' }}
+            />
+            <TextField
+              label="Max Runtime"
+              type="number"
+              value={maxRuntime}
+              onChange={(e) => setMaxRuntime(e.target.value)}
+            />
+          </Grid>
+
+          {/* Original Language Filter */}
+          <Grid item>
+            <FormControl style={{ minWidth: '120px' }}>
+              <InputLabel>Language</InputLabel>
+              <Select
+                value={originalLanguage}
+                onChange={(e) => setOriginalLanguage(e.target.value)}
+                label="Language"
+              >
+                <MenuItem value={'all'}>All</MenuItem>
+                <MenuItem value={'ja'}>Japanese</MenuItem>
+                <MenuItem value={'en'}>English</MenuItem>
+                {/* ... other language options */}
+              </Select>
+            </FormControl>
+          </Grid>
+
         </Grid>
-        <Grid item xs={6}>
-          <p>Duration</p>
-          <Slider
-            value={duration}
-            min={60}
-            max={660}
-            step={10}
-            onChange={(e, newValue) => setDuration(newValue)}
-            valueLabelDisplay='auto'
-            valueLabelFormat={value => <div>{formatDuration(value)}</div>}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <p>Plays (millions)</p>
-          <Slider
-            value={plays}
-            min={0}
-            max={1100000000}
-            step={10000000}
-            onChange={(e, newValue) => setPlays(newValue)}
-            valueLabelDisplay='auto'
-            valueLabelFormat={value => <div>{value / 1000000}</div>}
-          />
-        </Grid>
-        {/* TODO (TASK 24): add sliders for danceability, energy, and valence (they should be all in the same row of the Grid) */}
-        {/* Hint: consider what value xs should be to make them fit on the same row. Set max, min, and a reasonable step. Is valueLabelFormat is necessary? */}
-        {/* Need to review, if we need to delete */}
-        <Grid item xs={4}>
-          <p>Danceability</p>
-          <Slider
-            value={danceability}
-            min={0}
-            max={1}
-            step={0.01}
-            onChange={(e, newValue) => setDanceability(newValue)}
-            valueLabelDisplay='auto'
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <p>Energy</p>
-          <Slider
-            value={energy}
-            min={0}
-            max={1}
-            step={0.01}
-            onChange={(e, newValue) => setEnergy(newValue)}
-            valueLabelDisplay='auto'
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <p>Valence</p>
-          <Slider
-            value={valence}
-            min={0}
-            max={1}
-            step={0.01}
-            onChange={(e, newValue) => setValence(newValue)}
-            valueLabelDisplay='auto'
-          />
-        </Grid>
-        <Button onClick={() => search() } style={{ left: '50%', transform: 'translateX(-50%)' }}>
-          Search
-        </Button>
+
+                
+        
         <h2>Results</h2>
         {/* Notice how similar the DataGrid component is to our LazyTable! What are the differences? */}
         <DataGrid

@@ -17,43 +17,42 @@ const search_movies = async function(req, res) {
   // TODO (TASK 12): return all songs that match the given search query with parameters defaulted to those specified in API spec ordered by title (ascending)
   // Some default parameters have been provided for you, but you will need to fill in the rest
   const title = req.query.title ? `%${req.query.title}%` : '%';
-  const durationLow = parseInt(req.query.duration_low) || 60;
-  const durationHigh = parseInt(req.query.duration_high) || 660;
-  const playsLow = parseInt(req.query.plays_low) || 60;
-  const playsHigh = parseInt(req.query.plays_high) || 1100000000;
-  const danceabilityLow = parseFloat(req.query.danceability_low) || 0;
-  const danceabilityHigh = parseFloat(req.query.danceability_high) || 1;
-  const energyLow = parseFloat(req.query.energy_low) || 0;
-  const energyHigh = parseFloat(req.query.energy_high) || 1;
-  const valenceLow = parseFloat(req.query.valence_low) || 0;
-  const valenceHigh = parseFloat(req.query.valence_high) || 1;
-  const explicit = req.query.explicit === 'true' ? '%' : 'false';
+  const productionCountry = req.query.production_country || 'all';
+  const releaseDateStart = req.query.release_date_start || '1900-01-01';
+  const releaseDateEnd = req.query.release_date_end || '2050-01-01';
+  const runtimeMin = parseInt(req.query.runtime_min) || 0;
+  const runtimeMax = parseInt(req.query.runtime_max) || 30000;
+  const originalLanguage = req.query.original_language || 'all';
+
 
 
   // Construct the SQL query with dynamic filtering
   let sqlQuery = `
-    SELECT *
-    FROM Songs
+    SELECT
+    imdb_id, title, production_countries, release_date, runtime, original_language
+    FROM movie
     WHERE title LIKE ?
-    AND plays BETWEEN ? AND ?
-    AND duration BETWEEN ? AND ?
-    AND danceability BETWEEN ? AND ?
-    AND energy BETWEEN ? AND ?
-    AND valence BETWEEN ? AND ?
-    AND (explicit LIKE ? OR explicit = 'false')
-    ORDER BY title ASC
+    AND release_date BETWEEN ? AND ?
+    AND runtime BETWEEN ? AND ?
   `;
 
   // Query parameters for the prepared statement
   const queryParams = [
     title,
-    playsLow, playsHigh,
-    durationLow, durationHigh,
-    danceabilityLow, danceabilityHigh,
-    energyLow, energyHigh,
-    valenceLow, valenceHigh,
-    explicit
+    releaseDateStart, releaseDateEnd,
+    runtimeMin, runtimeMax
   ];
+
+  if (productionCountry !== 'all') {
+    sqlQuery = sqlQuery + 'AND production_countries = ?'
+    queryParams.push(productionCountry);
+  }
+
+  if (originalLanguage !== 'all') {
+    sqlQuery = sqlQuery + 'AND original_language = ?'
+    queryParams.push(originalLanguage);
+  }
+
 
   // Execute the query
   connection.query(sqlQuery, queryParams, (err, data) => {
