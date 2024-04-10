@@ -62,7 +62,7 @@ const search_movies = async function(req, res) {
 }
 
 const search_persons = async function(req, res) {
-  const name = req.query.title ? `%${req.query.title}%` : '%';
+  const name = req.query.name ? `%${req.query.name}%` : '%';
   const productionCountry = req.query.production_country || 'all';
   const releaseDateStart = req.query.release_date_start || '1900-01-01';
   const releaseDateEnd = req.query.release_date_end || '2050-01-01';
@@ -90,7 +90,7 @@ const search_persons = async function(req, res) {
     FROM person_selected p
     JOIN movie m ON m.imdb_id = p.imdb_id
     WHERE m.release_date BETWEEN ? AND ?
-        AND m.runtime BETWEEN ? AND ?=
+    AND m.runtime BETWEEN ? AND ?
   `;
 
   // Query parameters for the prepared statement
@@ -106,7 +106,7 @@ const search_persons = async function(req, res) {
   }
 
   if (originalLanguage !== 'all') {
-    sqlQuery = sqlQuery + 'AND m.original_language = ?;'
+    sqlQuery = sqlQuery + 'AND m.original_language = ?'
     queryParams.push(originalLanguage);
   }
 
