@@ -11,7 +11,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import Poster from "../components/Poster";
 import "./TopMoviePage.css";
 
 const config = require("../config.json");
@@ -30,10 +30,6 @@ export default function TopMoviePage() {
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [movies, setMovies] = useState([]);
 
-  const handleTabChange = (event, newValue) => {
-    setRankBy(newValue);
-  };
-
   useEffect(() => {
     fetch(
       `http://${config.server_host}:${config.server_port}/top_movies?rankBy=${rankBy}&tag=${tag}`
@@ -46,7 +42,7 @@ export default function TopMoviePage() {
     <div className="top-picks-page">
       <div className="nav-bar-holding-block"></div>
 
-      <Container style={{ color: "white", top: "60px" }}>
+      <Container style={{ color: "white", top: "60px", maxWidth: '1800px'}}>
         <Tabs
           value={rankBy}
           onChange={handleTabChange}
@@ -159,11 +155,11 @@ export default function TopMoviePage() {
           {tag === BEFORE_2000_TAG && "before 2000"}
         </h2>
 
-        {movies.map((movie) => (
-          <p key={movie.imdb_id}>
-            <NavLink to={`/movie/${movie.imdb_id}`}>{movie.title}</NavLink>
-          </p>
-        ))}
+        <div className="poster-div">
+          {movies.map((movie) => (
+            <Poster movie={movie} key={movie.imdb_id}></Poster>
+          ))}
+        </div>
       </Container>
     </div>
   );

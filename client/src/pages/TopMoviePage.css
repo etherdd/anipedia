@@ -4,3 +4,8 @@
   min-height: 100%;
   padding-top: 130px;
 }
+
+.poster-div {
+  overflow: auto;
+  white-space: nowrap;
+}

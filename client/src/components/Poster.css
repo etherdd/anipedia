@@ -1,0 +1,35 @@
+.group-block {
+    display: inline-block;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.img-block {
+    transition: all 1000ms ease-in-out;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.group-block:hover img {
+    filter: brightness(0.5);
+    cursor: pointer;
+}
+
+.text-block {
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f5f5f5;
+    cursor: pointer;
+}
+
+.group-block:hover .text-block {
+    visibility: visible;
+}
+
+.span-text {
+    font-size: 24px;
+}
