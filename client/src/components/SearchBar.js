@@ -10,7 +10,7 @@ const SearchComponent = () => {
       <TextField label='Title' value={title} style={{ width: "100%", height: '56px' }}/>
     </Grid>
     <Grid item xs={2}>
-      <Button  style={{ color:'white', background: 'grey', height: '56px', width: '100%'}}>Search</Button>
+      <Button  style={{ color:'white', background: '#333', height: '56px', width: '100%'}}>Search</Button>
     </Grid>
   </Grid>
   );
