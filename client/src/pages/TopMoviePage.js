@@ -38,6 +38,10 @@ export default function TopMoviePage() {
       .then((resJson) => setMovies(resJson));
   }, [rankBy, tag]);
 
+  const handleTabChange = (event, newValue) => {
+    setRankBy(newValue);
+  };
+
   return (
     <div className="top-picks-page">
       <div className="nav-bar-holding-block"></div>
