@@ -69,7 +69,7 @@ const popularityShortFilm = `SELECT *
 
 const movies = async function(req, res) {
   let queryString = "";
-  if (req.query.sortBy == 'rating') {
+  if (req.query.rankBy == 'rating') {
     if (req.query.tag == 'default') {
       queryString = ratingDefault;
     } else if (req.query.tag == 'before2000') {
@@ -81,7 +81,7 @@ const movies = async function(req, res) {
     } else if (req.query.tag == 'shortFilm') {
       queryString = ratingShortFilm;
     }
-  } else if (req.query.sortBy == 'popularity') {
+  } else if (req.query.rankBy == 'popularity') {
     if (req.query.tag == 'default') {
       queryString = popularityDefault;
     } else if (req.query.tag == 'before2000') {
@@ -94,7 +94,7 @@ const movies = async function(req, res) {
       queryString = popularityShortFilm;
     }
   } else {
-    console.log("Invalid sortBy query parameter");
+    console.log("Invalid rankBy query parameter");
     res.json([]);
     return;
   }

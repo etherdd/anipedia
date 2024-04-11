@@ -1,88 +1,170 @@
-import { useEffect, useState } from 'react';
-import { Box, Container } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import './TopMoviePage.css';
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Tab,
+  Tabs,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Container,
+  Grid,
+  TextField,
+} from "@mui/material";
+import { NavLink } from "react-router-dom";
+import "./TopMoviePage.css";
 
-const config = require('../config.json');
+const config = require("../config.json");
+
+const RANK_BY_RATING = "rating";
+const RANK_BY_POPULARITY = "popularity";
+
+const DEFAULT_TAG = "default";
+const BEFORE_2000_TAG = "before2000";
+const ENGLISH_TAG = "english";
+const JAPANESE_TAG = "japanese";
+const SHORT_FILM_TAG = "shortFilm";
 
 export default function TopMoviePage() {
-
-  /*const [albums, setAlbums] = useState([]);
-
-  useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/albums`)
-      .then(res => res.json())
-      .then(resJson => setAlbums(resJson));
-  }, []);
-
-  // flexFormat provides the formatting options for a "flexbox" layout that enables the album cards to
-  // be displayed side-by-side and wrap to the next line when the screen is too narrow. Flexboxes are
-  // incredibly powerful. You can learn more on MDN web docs linked below (or many other online resources)
-  // https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox
-  const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
-
-  return (
-    // TODO (TASK 22): replace the empty object {} in the Container's style property with flexFormat. Observe the change to the Albums page.
-    // TODO (TASK 22): then uncomment the code to display the cover image and once again observe the change, i.e. what happens to the layout now that each album card has a fixed width?
-    // This task is just to help you better understand formatting dynamically displayed data. No written explanation of the effects is necessary.
-    <Container style={{}}>
-      {albums.map((album) =>
-        <Box
-          key={album.album_id}
-          p={3}
-          m={2}
-          style={{ background: 'white', borderRadius: '16px', border: '2px solid #000' }}
-        >
-          {
-          <img
-            src={album.thumbnail_url}
-            alt={`${album.title} album art`}
-          />
-          }
-          <h4><NavLink to={`/albums/${album.album_id}`}>{album.title}</NavLink></h4>
-        </Box>
-      )}
-    </Container>
-  );*/
-
-  const movieTest = {
-    title: "Howl's Moving Castle",
-    imdb_id: 'tt0347149'
-  };
-
+  const [rankBy, setRankBy] = useState(RANK_BY_RATING);
+  const [tag, setTag] = useState(DEFAULT_TAG);
   const [movies, setMovies] = useState([]);
 
+  const handleTabChange = (event, newValue) => {
+    setRankBy(newValue);
+  };
+
   useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/top_movies?sortBy=rating&tag=japanese`)
-      .then(res => res.json())
-      .then(resJson => setMovies(resJson));
-  }, []);
+    fetch(
+      `http://${config.server_host}:${config.server_port}/top_movies?rankBy=${rankBy}&tag=${tag}`
+    )
+      .then((res) => res.json())
+      .then((resJson) => setMovies(resJson));
+  }, [rankBy, tag]);
 
   return (
-    <div className='top-picks-page'>
-      <div className='nav-bar-holding-block'></div>
+    <div className="top-picks-page">
+      <div className="nav-bar-holding-block"></div>
 
-      <Container style={{ color: "white", top: "60px" }} >
+      <Container style={{ color: "white", top: "60px" }}>
+        <Tabs
+          value={rankBy}
+          onChange={handleTabChange}
+          aria-label="search tabs"
+        >
+          <Tab
+            value={RANK_BY_RATING}
+            label="Rating Top 10"
+            style={{ color: rankBy === RANK_BY_RATING ? "white" : "grey" }}
+          />
+          <Tab
+            value={RANK_BY_POPULARITY}
+            label="Popularity Top 10"
+            style={{ color: rankBy === RANK_BY_POPULARITY ? "white" : "grey" }}
+          />
+        </Tabs>
 
-      
-        <h2 style={{ color: "white" }}>Top 10 Animations</h2>
-        <h4>Hardcode movie test:</h4>
-        <p>
-          <NavLink to={`/movie/${movieTest.imdb_id}`}>{movieTest.title}</NavLink>
-        </p>
-        <h4>Database movie test</h4>
-        {/* {console.log(movies)} */}
-        {movies.map((movie) =>
+        <div>
+          <Button
+            variant="outlined"
+            size="small"
+            style={
+              tag === BEFORE_2000_TAG
+                ? {
+                    textTransform: "none",
+                    margin: "30px 10px",
+                    color: "white",
+                    backgroundColor: "grey",
+                  }
+                : { textTransform: "none", margin: "30px 10px" }
+            }
+            onClick={() => {
+              // Set state can set the new state based on the prev state
+              setTag((prevState) =>
+                prevState === BEFORE_2000_TAG ? DEFAULT_TAG : BEFORE_2000_TAG
+              );
+            }}
+          >
+            Before 2000
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            style={
+              tag === ENGLISH_TAG
+                ? {
+                    textTransform: "none",
+                    margin: "30px 10px",
+                    color: "white",
+                    backgroundColor: "grey",
+                  }
+                : { textTransform: "none", margin: "30px 10px" }
+            }
+            onClick={() => {
+              setTag((prevState) =>
+                prevState === ENGLISH_TAG ? DEFAULT_TAG : ENGLISH_TAG
+              );
+            }}
+          >
+            English
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            style={
+              tag === JAPANESE_TAG
+                ? {
+                    textTransform: "none",
+                    margin: "30px 10px",
+                    color: "white",
+                    backgroundColor: "grey",
+                  }
+                : { textTransform: "none", margin: "30px 10px" }
+            }
+            onClick={() => {
+              setTag((prevState) =>
+                prevState === JAPANESE_TAG ? DEFAULT_TAG : JAPANESE_TAG
+              );
+            }}
+          >
+            Japanese
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            style={
+              tag === SHORT_FILM_TAG
+                ? {
+                    textTransform: "none",
+                    margin: "30px 10px",
+                    color: "white",
+                    backgroundColor: "grey",
+                  }
+                : { textTransform: "none", margin: "30px 10px" }
+            }
+            onClick={() => {
+              setTag((prevState) =>
+                prevState === SHORT_FILM_TAG ? DEFAULT_TAG : SHORT_FILM_TAG
+              );
+            }}
+          >
+            Short Film
+          </Button>
+        </div>
+
+        <h2 style={{ color: "white" }}>
+          Top 10 {tag === ENGLISH_TAG && "English"}
+          {tag === JAPANESE_TAG && "Japanese"}
+          {tag === SHORT_FILM_TAG && "Short Film"} Animations{" "}
+          {tag === BEFORE_2000_TAG && "before 2000"}
+        </h2>
+
+        {movies.map((movie) => (
           <p key={movie.imdb_id}>
             <NavLink to={`/movie/${movie.imdb_id}`}>{movie.title}</NavLink>
           </p>
-        )}
-      {/* <h2>Top Albums</h2>
-      <LazyTable route={`http://${config.server_host}:${config.server_port}/top_albums`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5, 10]} />
-      <Divider /> */}
+        ))}
       </Container>
     </div>
   );
-
-  
 }
