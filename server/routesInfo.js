@@ -34,14 +34,15 @@ const movie = async function(req, res) {
 const person = async function(req, res) {
   connection.query(`
     SELECT * 
-    FROM person_view
-    WHERE name_id = '${req.params.person_id}'
+    FROM name
+    LEFT JOIN person_view on person_view.name_id = name.name_id
+    WHERE name.name_id = '${req.params.person_id}'
     `, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json({});
       } else {
-        res.json(data[0]);
+        res.json(data);
       }
   });
 }
@@ -49,10 +50,9 @@ const person = async function(req, res) {
 //to be update
 const person_movies = async function(req, res) {
   connection.query(`
-  SELECT song_id, title, number, duration, plays
-  FROM Songs
-  WHERE album_id  = '${req.params.album_id}'
-  ORDER BY number ASC
+  SELECT *
+  FROM person_view
+  WHERE name_id = '${req.params.person_id}'
   `, (err, data) => {
     if (err || data.length === 0){
       console.log(err);

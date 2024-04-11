@@ -17,9 +17,10 @@ app.use(cors({
  ********************************/
 //info
 app.get('/movie/:movie_id', routesInfo.movie);
-app.get('/person/:person_id', routesInfo.person);
+app.get('/person/:person_id', routesInfo.person,routesInfo.person_movies);
+// app.get('/person/:person_id', routesInfo.person_movies);
 //movies from the chosen person
-//app.get('/person_moives/:person_id', routesInfo.person_movies);
+// app.get('/person_movies/:person_id', routesInfo.person_movies);
 //TO BE ADDED
 
 /********************************

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Container, Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
-import SongCard from '../components/SongCard';
+import { NavLink } from 'react-router-dom';
+
 import { formatDuration, formatReleaseDate } from '../helpers/formatter';
 
 import './PersonInfoPage.css';
@@ -10,94 +11,47 @@ import './PersonInfoPage.css';
 const config = require('../config.json');
 
 export default function PersonInfoPage() {
-   /*const { album_id } = useParams();
 
-  const [songData, setSongData] = useState([{}]); // default should actually just be [], but empty object element added to avoid error in template code
-  const [albumData, setAlbumData] = useState([]);
-
-  const [selectedSongId, setSelectedSongId] = useState(null);
-
-  useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/album/${album_id}`)
-      .then(res => res.json())
-      .then(resJson => setAlbumData(resJson));
-
-    fetch(`http://${config.server_host}:${config.server_port}/album_songs/${album_id}`)
-      .then(res => res.json())
-      .then(resJson => setSongData(resJson));
-  }, [album_id]);
-
-  return (
-    <Container>
-      {selectedSongId && <SongCard songId={selectedSongId} handleClose={() => setSelectedSongId(null)} />}
-      <Stack direction='row' justify='center'>
-        <img
-          key={albumData.album_id}
-          src={albumData.thumbnail_url}
-          alt={`${albumData.title} album art`}
-          style={{
-            marginTop: '40px',
-            marginRight: '40px',
-            marginBottom: '40px'
-          }}
-        />
-        <Stack>
-          <h1 style={{ fontSize: 64 }}>{albumData.title}</h1>
-          <h2>Released: {formatReleaseDate(albumData.release_date)}</h2>
-        </Stack>
-      </Stack>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell key='#'>#</TableCell>
-              <TableCell key='Title'>Title</TableCell>
-              <TableCell key='Plays'>Plays</TableCell>
-              <TableCell key='Duration'>Duration</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              // TODO (TASK 23): render the table content by mapping the songData array to <TableRow> elements
-              // Hint: the skeleton code for the very first row is provided for you. Fill out the missing information and then use a map function to render the rest of the rows.
-              // Hint: it may be useful to refer back to LazyTable.js
-              <TableRow key={songData[0].song_id}>
-                <TableCell key='#'>{songData[0].number}</TableCell>
-                <TableCell key='Title'>
-                  <Link onClick={() => setSelectedSongId(songData[0].song_id)}>
-                    Replace me
-                  </Link>
-                </TableCell>
-                <TableCell key='Plays'>Replace me</TableCell>
-                <TableCell key='Duration'>Replace me (use the formatDuration helper function, see SongCard.js for an example)</TableCell>
-              </TableRow>
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
-  );*/
-
-
-  //place holder for test
   const { person_id } = useParams();
   const [ personData, setPersonData] = useState([]);
+
 
   useEffect(() => {
     fetch(`http://${config.server_host}:${config.server_port}/person/${person_id}`)
       .then(res => res.json())
-      .then(resJson => setPersonData(resJson));
+      .then(resJson => {
+          setPersonData(resJson)
+      });
   }, [person_id]);
 
+  const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' ,color: "white", top: "60px"};
   return (
-    <div className='person-info-page'>
-      <div className='nav-bar-holding-block'></div>
-      <Container>
-        <h2>This is person page</h2>
-        {/* {console.log(personData)} */}
-        <p>{personData.primaryName}</p>
-        <p>{personData.primaryProfession}</p>
+      <Container style={flexFormat}>
+        {personData.map((personData) =>
+            <Box
+                key={personData.imdb_id}
+                p={5}
+                m={4}
+                style={{
+                  background: 'black',
+                  borderRadius: '16px',
+                  border: '2px solid #000',
+                  width: '300px',
+                  height: '400px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center', // Align items in the center vertically
+                  justifyContent: 'center', // Align items in the center horizontally
+                }}
+            >
+              <img
+                  src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
+                  alt={`${personData.title} movies`}
+                  style={{width: '200px', height: '300px'}}
+              />
+              <h4><NavLink to={`/movie/${personData.imdb_id}`}></NavLink></h4>
+            </Box>
+        )}
       </Container>
-    </div>
   );
 }
