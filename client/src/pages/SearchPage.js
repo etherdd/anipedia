@@ -22,6 +22,7 @@ export default function SearchPage() {
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [country, setCountry] = useState('');
+  const [role, setRole] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [minRuntime, setMinRuntime] = useState('');
@@ -60,7 +61,7 @@ export default function SearchPage() {
 
   const searchPerson = () => {
     fetch(`http://${config.server_host}:${config.server_port}/search_persons?name=${name}` +
-      `&production_country=${country}` +
+      `&role=${role}` +
       `&release_date_start=${startDate}&release_date_end=${endDate}` +
       `&runtime_min=${minRuntime}&runtime_max=${maxRuntime}` +
       `&original_language=${originalLanguage}`
@@ -89,9 +90,12 @@ export default function SearchPage() {
   ]
 
   if (searchType === SEARCH_PERSON){
+    columns.splice(1,1);
     const nameColumn = { field: 'primaryName', headerName: 'Name', flex:0.5, renderCell: (params) => (
       <NavLink style={{ color: 'white' }} to={`/person/${params.row.name_id}`}>{params.value}</NavLink>
-  )}
+    )}
+    const categoryColumn = { field: 'category', headerName: 'Role', flex:0.3};
+    columns.unshift(categoryColumn);
     columns.unshift(nameColumn);
   }
 
@@ -146,21 +150,41 @@ export default function SearchPage() {
         }
         
         <Grid container spacing={2}  style={{ marginTop: '10px'}}>
+        {searchType === SEARCH_MOVIE && 
         <Grid item xs={3}>
             <FormControl style={{ width: "100%"}} >
-              <InputLabel>Release Country</InputLabel>
+              <InputLabel>Production Country</InputLabel>
               <Select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                label="Release Country"
+                label="Production Country"
               >
-                <MenuItem value={'all'}>All</MenuItem>
-                <MenuItem value={'Japan'}>Japan</MenuItem>
-                <MenuItem value={'USA'}>USA</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'Japan'}>Japan</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'United States'}>USA</MenuItem>
                 {/* ... other country options */}
               </Select>
             </FormControl>
           </Grid>
+          }
+
+        {searchType === SEARCH_PERSON && 
+        <Grid item xs={3}>
+            <FormControl style={{ width: "100%"}} >
+              <InputLabel>Role</InputLabel>
+              <Select 
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                label="Role"
+              >
+                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'director'}>Director</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'writer'}>Writer</MenuItem>
+                {/* ... other country options */}
+              </Select>
+            </FormControl>
+          </Grid>
+          }          
 
           {/* Original Language Filter */}
           <Grid item xs={3}>
@@ -171,9 +195,9 @@ export default function SearchPage() {
                 onChange={(e) => setOriginalLanguage(e.target.value)}
                 label="Language"
               >
-                <MenuItem value={'all'}>All</MenuItem>
-                <MenuItem value={'ja'}>Japanese</MenuItem>
-                <MenuItem value={'en'}>English</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'ja'}>Japanese</MenuItem>
+                <MenuItem style={{color: "grey"}} value={'en'}>English</MenuItem>
                 {/* ... other language options */}
               </Select>
             </FormControl>
@@ -233,7 +257,7 @@ export default function SearchPage() {
         
         {searchType === SEARCH_MOVIE && 
         <>
-          <h2>Results Movie</h2>
+          <h2>Search Movie</h2>
           <DataGrid
             rows={data}
             columns={columns}
@@ -247,7 +271,7 @@ export default function SearchPage() {
 
         {searchType === SEARCH_PERSON && 
         <>
-          <h2>Results Person</h2>
+          <h2>Search Person</h2>
           <DataGrid
             rows={personData}
             columns={columns}
