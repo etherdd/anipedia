@@ -34,7 +34,7 @@ const movie = async function(req, res) {
 const person = async function(req, res) {
   connection.query(`
     SELECT * 
-    FROM name
+    FROM person_view
     WHERE name_id = '${req.params.person_id}'
     `, (err, data) => {
       if (err || data.length === 0) {

@@ -12,7 +12,7 @@
 # next.js
 /webapp/.next/
 /webapp/out/
-
+/.idea/
 # production
 /webapp/build
 
