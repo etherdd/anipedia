@@ -26,7 +26,7 @@ const search_movies = async function(req, res) {
   // Construct the SQL query with dynamic filtering
   let sqlQuery = `
     SELECT
-    imdb_id, title, production_countries, release_date, runtime, original_language
+    imdb_id, title, production_countries, release_date, runtime, original_language, poster_path
     FROM movie
     WHERE title LIKE ?
     AND release_date BETWEEN ? AND ?
@@ -41,8 +41,9 @@ const search_movies = async function(req, res) {
   ];
 
   if (productionCountry !== 'all') {
-    sqlQuery = sqlQuery + 'AND production_countries = ?'
-    queryParams.push(productionCountry);
+    sqlQuery = sqlQuery + 'AND production_countries LIKE ?'
+    const productionCountryLike = `%${productionCountry}%`
+    queryParams.push(productionCountryLike);
   }
 
   if (originalLanguage !== 'all') {
@@ -63,7 +64,7 @@ const search_movies = async function(req, res) {
 
 const search_persons = async function(req, res) {
   const name = req.query.name ? `%${req.query.name}%` : '%';
-  const productionCountry = req.query.production_country || 'all';
+  const role = req.query.role || 'all';
   const releaseDateStart = req.query.release_date_start || '1900-01-01';
   const releaseDateEnd = req.query.release_date_end || '2050-01-01';
   const runtimeMin = parseInt(req.query.runtime_min) || 0;
@@ -74,19 +75,19 @@ const search_persons = async function(req, res) {
   let sqlQuery = `
     WITH person_selected AS
       (
-        SELECT n.name_id, n.primaryName, c.imdb_id
+        SELECT n.name_id, n.primaryName, c.imdb_id, c.category
         FROM name n JOIN crew c ON n.name_id = c.name_id
         WHERE primaryName LIKE ?
         UNION
-        SELECT n.name_id, n.primaryName, d.imdb_id
+        SELECT n.name_id, n.primaryName, d.imdb_id, 'director' AS category
         FROM name n JOIN director d ON n.name_id = d.directors_id
         WHERE primaryName LIKE ?
         UNION
-        SELECT n.name_id, n.primaryName, w.imdb_id
+        SELECT n.name_id, n.primaryName, w.imdb_id, 'writer' AS category
         FROM name n JOIN writer w ON n.name_id = w.writers_id
         WHERE primaryName LIKE ?
       )
-    SELECT name_id, primaryName, p.imdb_id AS imdb_id, title, production_countries, release_date, runtime, original_language 
+    SELECT name_id, primaryName, category, p.imdb_id AS imdb_id, title, production_countries, release_date, runtime, original_language 
     FROM person_selected p
     JOIN movie m ON m.imdb_id = p.imdb_id
     WHERE m.release_date BETWEEN ? AND ?
@@ -100,9 +101,9 @@ const search_persons = async function(req, res) {
     runtimeMin, runtimeMax
   ];
 
-  if (productionCountry !== 'all') {
-    sqlQuery = sqlQuery + 'AND m.production_countries = ?'
-    queryParams.push(productionCountry);
+  if (role !== 'all') {
+    sqlQuery = sqlQuery + 'AND category = ?'
+    queryParams.push(role);
   }
 
   if (originalLanguage !== 'all') {
