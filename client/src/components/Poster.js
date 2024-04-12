@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import './Poster.css';
 
 export default function Poster({ movie }) {
-    let navigate = useNavigate(); 
+    const navigate = useNavigate(); 
     
-    const routeChange = () => { 
-        navigate(`/movie/${movie.imdb_id}`);
+    const handleMovieClick = () => { 
+      navigate(`/movie/${movie.imdb_id}`);
     }
 
     const posterPath = `https://image.tmdb.org/t/p/w440_and_h660_face${movie.poster_path}`;
@@ -18,7 +18,7 @@ export default function Poster({ movie }) {
             height={"550hv"}
             alt="cell"
             className="img-block"
-            onClick={routeChange}
+            onClick={handleMovieClick}
           />
           <div className="text-block">
             <span className="span-text">{movie.title}</span>

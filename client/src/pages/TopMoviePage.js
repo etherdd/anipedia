@@ -3,13 +3,7 @@ import {
   Button,
   Tab,
   Tabs,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Container,
-  Grid,
-  TextField,
 } from "@mui/material";
 import Poster from "../components/Poster";
 import "./TopMoviePage.css";
