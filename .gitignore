@@ -34,3 +34,4 @@
 # typescript
 /webapp/*.tsbuildinfo
 /webapp/next-env.d.ts
+node_modules
