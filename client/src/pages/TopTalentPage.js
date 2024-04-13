@@ -21,7 +21,7 @@ const YOUNG_TAG = "personYoung";
 const BEFORE_2000_TAG = "personBefore2000";
 const ENGLISH_TAG = "personEnglish";
 const JAPANESE_TAG = "personJapanese";
-const FRANCH_TAG = "personFrench";
+const FRENCH_TAG = "personFrench";
 const SHORT_FILM_TAG = "personShortFilm";
 
 export default function TopTalentPage() {
@@ -67,13 +67,13 @@ export default function TopTalentPage() {
           />
         </Tabs> */}
         <h2>
-          Top 10 {tag === PROLIFIC_TAG && "Prolific"}
-          {tag === YOUNG_TAG && "Young"}
+          Top 10 {tag === PROLIFIC_TAG && "Most Prolific"}
+          {tag === YOUNG_TAG && "Youngest"}
           {tag === ENGLISH_TAG && "English"}
           {tag === JAPANESE_TAG && "Japanese"}
-          {tag === FRANCH_TAG && "Franch"}
+          {tag === FRENCH_TAG && "French"}
           {tag === SHORT_FILM_TAG && "Short Film"} Directors{" "}
-          {tag === BEFORE_2000_TAG && "before 2000"}
+          {tag === BEFORE_2000_TAG && "Before 2000"}
         </h2>
         <Divider style={{ borderColor: "gray" }}></Divider>
         <div>
@@ -97,7 +97,7 @@ export default function TopTalentPage() {
               );
             }}
           >
-            Prolific
+            Most Prolific
           </Button>
           <Button
             variant="outlined"
@@ -119,7 +119,7 @@ export default function TopTalentPage() {
               );
             }}
           >
-            Young
+            Youngest
           </Button>
           <Button
             variant="outlined"
@@ -189,7 +189,7 @@ export default function TopTalentPage() {
             variant="outlined"
             size="small"
             style={
-              tag === FRANCH_TAG
+              tag === FRENCH_TAG
                 ? {
                     textTransform: "none",
                     margin: "30px 10px",
@@ -200,11 +200,11 @@ export default function TopTalentPage() {
             }
             onClick={() => {
               setTag((prevState) =>
-                prevState === FRANCH_TAG ? DEFAULT_TAG : FRANCH_TAG
+                prevState === FRENCH_TAG ? DEFAULT_TAG : FRENCH_TAG
               );
             }}
           >
-            Franch
+            French
           </Button>
           <Button
             variant="outlined"
