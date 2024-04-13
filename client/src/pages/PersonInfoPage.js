@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Container, Box } from '@mui/material';
 
 import { NavLink } from 'react-router-dom';
 
-import { formatDuration, formatReleaseDate } from '../helpers/formatter';
+import { formatReleaseDate } from '../helpers/formatter';
 
 import './PersonInfoPage.css';
 
@@ -25,33 +25,57 @@ export default function PersonInfoPage() {
   }, [person_id]);
 
   const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' ,color: "white", top: "60px"};
-  return (
-      <Container style={flexFormat}>
-        {personData.map((personData) =>
-            <Box
-                key={personData.imdb_id}
-                p={5}
-                m={4}
-                style={{
-                  background: 'black',
-                  borderRadius: '16px',
-                  border: '2px solid #000',
-                  width: '300px',
-                  height: '400px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center', // Align items in the center vertically
-                  justifyContent: 'center', // Align items in the center horizontally
-                }}
-            >
-              <img
-                  src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
-                  alt={`${personData.title} movies`}
-                  style={{width: '200px', height: '300px'}}
-              />
-              <h4><NavLink to={`/movie/${personData.imdb_id}`}></NavLink></h4>
-            </Box>
-        )}
-      </Container>
-  );
+
+return (
+  <div className='person-info-page'>
+    <div className='nav-bar-holding-block'></div>
+      <div style={{color: 'white', height: "120px"}}>
+          <div style={{height: '80px', display: 'flex', flexDirection: 'column'}}>
+              <h2><p>{personData[0].primaryName}</p></h2>
+          </div>
+          <div style={{height: '100px', display: 'flex', flexDirection: 'column'}}>
+              <h3><p>{personData[0].primaryProfession}</p></h3>
+          </div>
+          <div style={{color: 'white'}}>
+              <Container style={flexFormat}>
+                  {personData.map((personData) =>
+                      <div key={personData.imdb_id}
+                           style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                          <div style={{
+                              height: '60px',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'space-between'
+                          }}>
+                              <p>{personData.original_title}</p>
+                              {personData.release_date && <p>{formatReleaseDate(personData.release_date)}</p>}
+                          </div>
+                          <Box
+                              p={5}
+                              m={4}
+                              style={{
+                                  width: '300px',
+                                  height: '400px',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                              }}
+                          >
+                              <img
+                                  src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
+                                  alt={`${personData.title} movies`}
+                                  style={{width: '200px', height: '300px'}}
+                              />
+                              <h4><NavLink to={`/movie/${personData.imdb_id}`}></NavLink></h4>
+                          </Box>
+                      </div>
+                  )}
+              </Container>
+          </div>
+      </div>
+  </div>
+);
+
+
 }
