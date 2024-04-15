@@ -20,6 +20,7 @@
             text-decoration: none;
             color: white;
             font-size: 18px;
+            cursor: pointer;
         }
 
         ::after {
@@ -40,26 +41,26 @@
 
 .navbar ul li.navbar-selected-li {
     position: relative;
-        list-style: none;
-        display: inline-block;
-        margin: 0 2vw;
+    list-style: none;
+    display: inline-block;
+    margin: 0 2vw;
 
-        a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-        }
+    a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+    }
 
-        ::after {
-            content: '';
-            height: 1px;
-            width: 100%;
-            background: white;
-            position: absolute;
-            left: 0;
-            bottom: 3px;
-            transition: 0.5s;
-        }
+    ::after {
+        content: '';
+        height: 1px;
+        width: 100%;
+        background: white;
+        position: absolute;
+        left: 0;
+        bottom: 3px;
+        transition: 0.5s;
+    }
 }
 
 .logo {
@@ -70,4 +71,13 @@
 
 .empty-div {
     width: 120px;
+}
+
+.welcome {
+    display: inline-block;
+    font-size: 18px;
+    font-family: "EB Garamond", serif;
+    font-weight: 300;
+    word-spacing: -1px;
+    letter-spacing: 1px;
 }
