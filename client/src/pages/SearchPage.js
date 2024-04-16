@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, Tab, Tabs,FormControl, InputLabel, Select, MenuItem, Container, Grid, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { NavLink } from 'react-router-dom';
@@ -16,6 +17,7 @@ export default function SearchPage() {
   const [data, setData] = useState([]);
   const [personData, setPersonData] = useState([]);
 
+  const { keyword } = useParams();
 
   const [searchType, setSearchType] = useState(SEARCH_MOVIE);
 
@@ -29,14 +31,24 @@ export default function SearchPage() {
   const [maxRuntime, setMaxRuntime] = useState('');
   const [originalLanguage, setOriginalLanguage] = useState('');
 
-  // useEffect(() => {
-  //   fetch(`http://${config.server_host}:${config.server_port}/search_movies`)
-  //     .then(res => res.json())
-  //     .then(resJson => {
-  //       const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
-  //       setData(moviesWithId);
-  //     });
-  // }, []);
+  useEffect(() => {
+
+    if (keyword) {
+      setTitle(keyword);
+      fetch(`http://${config.server_host}:${config.server_port}/search_movies?title=${keyword}`)
+      .then(res => res.json())
+      .then(resJson => {
+        const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
+        setData(moviesWithId);
+      });
+    }
+  }, [keyword]);
+
+//   if (title !== ''){useEffect(() => {
+//     // If you want to trigger a search automatically, call a function here
+//     // For example: performSearch();
+//   }, [keyword]); // This will trigger whenever the keyword changes
+// }
 
   const handleSearchChange = (event, newValue) => {
     setSearchType(newValue);
@@ -99,13 +111,7 @@ export default function SearchPage() {
     columns.unshift(nameColumn);
   }
 
-  // This component makes uses of the Grid component from MUI (https://mui.com/material-ui/react-grid/).
-  // The Grid component is super simple way to create a page layout. Simply make a <Grid container> tag
-  // (optionally has spacing prop that specifies the distance between grid items). Then, enclose whatever
-  // component you want in a <Grid item xs={}> tag where xs is a number between 1 and 12. Each row of the
-  // grid is 12 units wide and the xs attribute specifies how many units the grid item is. So if you want
-  // two grid items of the same size on the same row, define two grid items with xs={6}. The Grid container
-  // will automatically lay out all the grid items into rows based on their xs values.
+ 
   return (
     <div className='search-page'>
       <div className='nav-bar-holding-block-on-search'></div>
@@ -257,9 +263,7 @@ export default function SearchPage() {
         
         {searchType === SEARCH_MOVIE && 
         <>
-          <h2>Search Movie
-         { console.log(data)}
-          </h2>
+          <h2>Search Movie</h2>
           <DataGrid
             rows={data}
             columns={columns}

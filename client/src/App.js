@@ -43,6 +43,12 @@ export default function App() {
               <HomePage />
             </>} 
           />
+          <Route path="/search/:keyword" element={
+            <>
+              <NavBar selected={"/search"} />
+              <SearchPage />
+            </>} 
+          />
           <Route path="/search" element={
             <>
               <NavBar selected={"/search"} />
