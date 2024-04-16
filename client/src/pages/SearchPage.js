@@ -257,7 +257,9 @@ export default function SearchPage() {
         
         {searchType === SEARCH_MOVIE && 
         <>
-          <h2>Search Movie</h2>
+          <h2>Search Movie
+         { console.log(data)}
+          </h2>
           <DataGrid
             rows={data}
             columns={columns}
@@ -271,7 +273,9 @@ export default function SearchPage() {
 
         {searchType === SEARCH_PERSON && 
         <>
-          <h2>Search Person</h2>
+          <h2>Search Person
+            {console.log(personData)}
+          </h2>
           <DataGrid
             rows={personData}
             columns={columns}
