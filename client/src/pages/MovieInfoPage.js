@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Container, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CommentCard from '../components/CommentCard';
 
 import './MovieInfoPage.css'
 
@@ -76,6 +77,7 @@ export default function MovieInfoPage() {
             {movieData.poster_path && (
               <img src={`https://image.tmdb.org/t/p/w1280/${movieData.poster_path}`} alt="Movie Poster" style={{ width: "400px", height: "600px" }} />
             )}
+            <CommentCard movieId={movie_id}></CommentCard>
           </div>
         </div>
       </Container>

@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 export default function NavBar({ selected }) {
-  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
-    useAuth0();
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
 
   const navigate = useNavigate();
 

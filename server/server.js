@@ -4,13 +4,15 @@ const config = require('./config');
 const routesInfo = require('./routesInfo');
 const routesTop = require('./routesTop');
 const routesSearch = require('./routesSearch');
-
+const routesComment = require('./routesComment');
 
 const app = express();
 app.use(cors({
   origin: '*',
 }));
 
+// Required to parse request body: https://stackoverflow.com/questions/11625519/how-to-access-the-request-body-when-posting-using-node-js-and-express
+app.use(express.json());
 
 /********************************
  * display page *
@@ -36,6 +38,11 @@ app.get('/top_persons', routesTop.persons);
 app.get('/search_movies', routesSearch.search_movies);
 app.get('/search_persons', routesSearch.search_persons);
 
+/********************************
+ * comments *
+ ********************************/
+app.post('/movie/:movie_id/comment', routesComment.postComment);
+app.get('/movie/:movie_id/comment', routesComment.getComment);
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`)
