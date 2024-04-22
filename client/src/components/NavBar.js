@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 export default function NavBar({ selected }) {
-  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
+    useAuth0();
 
   const navigate = useNavigate();
 
@@ -59,7 +60,17 @@ export default function NavBar({ selected }) {
                   Log out
                 </a>
               ) : (
-                <a onClick={() => loginWithRedirect()}>Log in</a>
+                <a
+                  onClick={() =>
+                    loginWithRedirect({
+                      appState: {
+                        returnTo: window.location.pathname,
+                      },
+                    })
+                  }
+                >
+                  Log in
+                </a>
               ))}
           </li>
         </ul>

@@ -5,6 +5,7 @@ const routesInfo = require('./routesInfo');
 const routesTop = require('./routesTop');
 const routesSearch = require('./routesSearch');
 const routesComment = require('./routesComment');
+const routesLike = require('./routesLike');
 
 const app = express();
 app.use(cors({
@@ -43,6 +44,13 @@ app.get('/search_persons', routesSearch.search_persons);
  ********************************/
 app.post('/movie/:movie_id/comment', routesComment.postComment);
 app.get('/movie/:movie_id/comment', routesComment.getComment);
+
+/********************************
+ * like *
+ ********************************/
+app.post('/movie/:movie_id/like', routesLike.postLike);
+app.get('/movie/:movie_id/like', routesLike.getLike);
+
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`)

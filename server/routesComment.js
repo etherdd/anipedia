@@ -9,7 +9,7 @@ const postComment = async function (req, res) {
     console.log(`Request body ${JSON.stringify(body)}`);
     const db = await mongodb();
     const collection = db.collection("comments");
-    const result = await collection.insertOne({
+    const result = await collection.insertOne({  // insert
       movie_id: movieId,
       comment: body.comment,
       user_id: body.user_id,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { useAuth0 } from "@auth0/auth0-react";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentCard from '../components/CommentCard';
@@ -10,7 +11,9 @@ import './MovieInfoPage.css'
 const config = require('../config.json');
 
 export default function MovieInfoPage() {
-
+  const { loginWithRedirect, user, isAuthenticated, isLoading } =
+    useAuth0();
+  
   const { movie_id } = useParams();
   const [ movieData, setMovieData] = useState([]);
 
@@ -21,12 +24,46 @@ export default function MovieInfoPage() {
   }, [movie_id]);
 
 
+  // For Like button
+  const [liked, setLiked] = useState(false);
+  const handleLikeClick = () => {
+    if (!isAuthenticated) {
+      loginWithRedirect({
+        appState: {
+          returnTo: window.location.pathname,
+        },
+      })
+      return;
+    }
 
-   // For Like button
-    const [liked, setLiked] = useState(false);
-    const handleLikeClick = () => {
-    setLiked(!liked);
+    fetch(
+      `http://${config.server_host}:${config.server_port}/movie/${movie_id}/like`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          select: !liked,
+          user_id: user.sub,
+        }),
+      }
+    )
+    .then(response => response.json())
+    .then((json) => {
+      console.log(json)
+      setLiked(!liked);
+    });
   };
+
+  useEffect(() => {
+    if (user === undefined || user.sub === undefined) return;
+    fetch(`http://${config.server_host}:${config.server_port}/movie/${movie_id}/like?user_id=${user.sub}`)
+      .then(res => res.json())
+      .then(resJson => {
+        console.log(resJson);
+        setLiked(resJson.like)});
+  }, [user])
 
   // Function to format release date to "YYYY-MM-DD" format
   const formatReleaseDate = (dateString) => {
@@ -38,14 +75,14 @@ export default function MovieInfoPage() {
     <div className='movie-info-page'>
       <div className='nav-bar-holding-block'></div>
       <Container style={{ color: "white", top: "60px"}}>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "start" }}>
           <div style={{ marginRight: "20px" }}>
             <h2>
-              {movieData.title && (
+              {movieData.title && !isLoading && (
                 <>
                   {movieData.title}
-                  <button onClick={handleLikeClick} style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "10px" }}>
-                    {liked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                  <button onClick={handleLikeClick} style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "10px"}}>
+                    {liked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon style={{ color: "white" }} />}
                   </button>
                 </>
               )}

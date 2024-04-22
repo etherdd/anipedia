@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TextField, Button, ButtonGroup, Modal, Card } from "@mui/material";
+import { TextField, Button, Card } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 // Format date
 import moment from "moment";
@@ -8,7 +8,7 @@ import "./CommentCard.css";
 const config = require("../config.json");
 
 export default function Poster({ movieId }) {
-  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
+  const { user, isAuthenticated, isLoading } =
     useAuth0();
 
   const [comments, setComments] = useState([]);
