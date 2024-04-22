@@ -29,13 +29,17 @@ export default function PersonInfoPage() {
 return (
   <div className='person-info-page'>
     <div className='nav-bar-holding-block'></div>
-      <div style={{color: 'white', height: "120px"}}>
+    {personData.length > 0 && 
+      (<div style={{color: 'white', height: "120px"}}>
+        <Container>
           <div style={{height: '80px', display: 'flex', flexDirection: 'column'}}>
               <h2><p>{personData[0].primaryName}</p></h2>
           </div>
           <div style={{height: '100px', display: 'flex', flexDirection: 'column'}}>
               <h3><p>{personData[0].primaryProfession}</p></h3>
           </div>
+        </Container>
+          
           <div style={{color: 'white'}}>
               <Container style={flexFormat}>
                   {personData.map((personData) =>
@@ -73,7 +77,7 @@ return (
                   )}
               </Container>
           </div>
-      </div>
+      </div>)}
   </div>
 );
 
