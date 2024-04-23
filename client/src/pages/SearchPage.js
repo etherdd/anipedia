@@ -82,7 +82,7 @@ export default function SearchPage() {
       .then(resJson => {
         // DataGrid expects an array of objects with a unique id.
         // To accomplish this, we use a map with spread syntax (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
-        const personWithId = resJson.map((person) => ({ id: person.imdb_id, ...person }));
+        const personWithId = resJson.map((person) => ({ id: `${person.name_id}_${person.imdb_id}`, ...person }));
         setPersonData(personWithId);
       });
   }
@@ -263,7 +263,9 @@ export default function SearchPage() {
         
         {searchType === SEARCH_MOVIE && 
         <>
-          <h2>Search Movie</h2>
+          <h2>Search Movie
+          {console.log(data)}
+          </h2>
           <DataGrid
             rows={data}
             columns={columns}

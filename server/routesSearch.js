@@ -87,7 +87,7 @@ const search_persons = async function(req, res) {
         FROM name n JOIN writer w ON n.name_id = w.writers_id
         WHERE primaryName LIKE ?
       )
-    SELECT name_id, primaryName, category, p.imdb_id AS imdb_id, title, production_countries, release_date, runtime, original_language 
+    SELECT m.imdb_id AS imdb_id, name_id, primaryName, category, title, production_countries, release_date, runtime, original_language 
     FROM person_selected p
     JOIN movie m ON m.imdb_id = p.imdb_id
     WHERE m.release_date BETWEEN ? AND ?
