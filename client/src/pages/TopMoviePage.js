@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Tab,
-  Tabs,
-  Container,
-} from "@mui/material";
+import { Button, Tab, Tabs, Container } from "@mui/material";
 import Poster from "../components/Poster";
 import "./TopMoviePage.css";
 
@@ -12,6 +7,7 @@ const config = require("../config.json");
 
 const RANK_BY_RATING = "rating";
 const RANK_BY_POPULARITY = "popularity";
+const RANK_BY_USER = "forUser";
 
 const DEFAULT_TAG = "default";
 const BEFORE_2000_TAG = "before2000";
@@ -56,9 +52,15 @@ export default function TopMoviePage() {
             label="Popularity Top 10"
             style={{ color: rankBy === RANK_BY_POPULARITY ? "white" : "grey" }}
           />
+          <Tab
+            value={RANK_BY_USER}
+            label="For You"
+            style={{ color: rankBy === RANK_BY_USER ? "white" : "grey" }}
+          />
         </Tabs>
 
         <div>
+          {/* Before 2000 tag */}
           <Button
             variant="outlined"
             size="small"
@@ -81,6 +83,8 @@ export default function TopMoviePage() {
           >
             Before 2000
           </Button>
+
+          {/* English tag */}
           <Button
             variant="outlined"
             size="small"
@@ -102,6 +106,8 @@ export default function TopMoviePage() {
           >
             English
           </Button>
+
+          {/* Japanese tag */}
           <Button
             variant="outlined"
             size="small"
@@ -123,6 +129,8 @@ export default function TopMoviePage() {
           >
             Japanese
           </Button>
+
+          {/* Short Film tag */}
           <Button
             variant="outlined"
             size="small"
@@ -146,18 +154,21 @@ export default function TopMoviePage() {
           </Button>
         </div>
 
-        <h2 style={{ color: "white" }}>
+        {/* Show different Titles varies by the tags selected */}
+        <h2 style={{ color: "white", paddingLeft: "30px"}}>
           Top 10 {tag === ENGLISH_TAG && "English"}
           {tag === JAPANESE_TAG && "Japanese"}
           {tag === SHORT_FILM_TAG && "Short Film"} Animations{" "}
           {tag === BEFORE_2000_TAG && "before 2000"}
         </h2>
 
+        {/* Show a list of 10 movies in a sliding way */}
         <div className="poster-div">
           {movies.map((movie) => (
             <Poster movie={movie} key={movie.imdb_id}></Poster>
           ))}
         </div>
+
       </Container>
     </div>
   );

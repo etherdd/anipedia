@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Link } from "@mui/material";
+import { Button, Tab, Tabs, Container, Link } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,13 +7,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
 
 import { useNavigate } from "react-router-dom";
 
 import "./TopTalentPage.css";
 
 const config = require("../config.json");
+
+const TOP_10_DIRECTORS = "overallTop";
+const FOR_YOU = "forUser";
 
 const DEFAULT_TAG = "personDefault";
 const PROLIFIC_TAG = "personProlific";
@@ -25,13 +27,14 @@ const FRENCH_TAG = "personFrench";
 const SHORT_FILM_TAG = "personShortFilm";
 
 export default function TopTalentPage() {
+  const [rankBy, setRankBy] = useState(TOP_10_DIRECTORS);
   const navigate = useNavigate();
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [persons, setPersons] = useState([]);
 
-  // const handleTabChange = (event, newValue) => {
-  //   setRankBy(newValue);
-  // };
+  const handleTabChange = (event, newValue) => {
+    setRankBy(newValue);
+  };
 
   const handleRowClick = (directorId) => {
     navigate(`/person/${directorId}`);
@@ -50,33 +53,25 @@ export default function TopTalentPage() {
     <div className="top-talent-page">
       <div className="nav-bar-holding-block"></div>
       <Container style={{ color: "white", top: "60px" }}>
-        {/* <Tabs
+        <Tabs
           value={rankBy}
           onChange={handleTabChange}
           aria-label="search tabs"
         >
           <Tab
-            value={RANK_BY_RATING}
-            label="Rating Top 10"
-            style={{ color: rankBy === RANK_BY_RATING ? "white" : "grey" }}
+            value={TOP_10_DIRECTORS}
+            label="Top 10 Directors"
+            style={{ color: rankBy === TOP_10_DIRECTORS ? "white" : "grey" }}
           />
           <Tab
-            value={RANK_BY_POPULARITY}
-            label="Popularity Top 10"
-            style={{ color: rankBy === RANK_BY_POPULARITY ? "white" : "grey" }}
+            value={FOR_YOU}
+            label="For You"
+            style={{ color: rankBy === FOR_YOU ? "white" : "grey" }}
           />
-        </Tabs> */}
-        <h2>
-          Top 10 {tag === PROLIFIC_TAG && "Most Prolific"}
-          {tag === YOUNG_TAG && "Youngest"}
-          {tag === ENGLISH_TAG && "English"}
-          {tag === JAPANESE_TAG && "Japanese"}
-          {tag === FRENCH_TAG && "French"}
-          {tag === SHORT_FILM_TAG && "Short Film"} Directors{" "}
-          {tag === BEFORE_2000_TAG && "Before 2000"}
-        </h2>
-        <Divider style={{ borderColor: "gray" }}></Divider>
+        </Tabs>
+
         <div>
+          {/* Most Prolific tag */}
           <Button
             variant="outlined"
             size="small"
@@ -99,6 +94,8 @@ export default function TopTalentPage() {
           >
             Most Prolific
           </Button>
+
+          {/* Youngest tag */}
           <Button
             variant="outlined"
             size="small"
@@ -113,7 +110,6 @@ export default function TopTalentPage() {
                 : { textTransform: "none", margin: "30px 10px" }
             }
             onClick={() => {
-              // Set state can set the new state based on the prev state
               setTag((prevState) =>
                 prevState === YOUNG_TAG ? DEFAULT_TAG : YOUNG_TAG
               );
@@ -121,6 +117,8 @@ export default function TopTalentPage() {
           >
             Youngest
           </Button>
+
+          {/* Before 2000 tag */}
           <Button
             variant="outlined"
             size="small"
@@ -135,7 +133,6 @@ export default function TopTalentPage() {
                 : { textTransform: "none", margin: "30px 10px" }
             }
             onClick={() => {
-              // Set state can set the new state based on the prev state
               setTag((prevState) =>
                 prevState === BEFORE_2000_TAG ? DEFAULT_TAG : BEFORE_2000_TAG
               );
@@ -143,6 +140,8 @@ export default function TopTalentPage() {
           >
             Before 2000
           </Button>
+
+          {/* English tag */}
           <Button
             variant="outlined"
             size="small"
@@ -164,6 +163,8 @@ export default function TopTalentPage() {
           >
             English
           </Button>
+
+          {/* Japanese tag */}
           <Button
             variant="outlined"
             size="small"
@@ -185,6 +186,8 @@ export default function TopTalentPage() {
           >
             Japanese
           </Button>
+
+          {/* French tag */}
           <Button
             variant="outlined"
             size="small"
@@ -206,6 +209,8 @@ export default function TopTalentPage() {
           >
             French
           </Button>
+
+          {/* Short Film tag */}
           <Button
             variant="outlined"
             size="small"
@@ -229,7 +234,18 @@ export default function TopTalentPage() {
           </Button>
         </div>
 
-        {persons.length != 0 && (
+        {/* Show different Titles varies by the tags selected */}
+        <h2 style={{ color: "white", paddingLeft: "10px"}}>
+          Top 10 {tag === PROLIFIC_TAG && "Most Prolific"}
+          {tag === YOUNG_TAG && "Youngest"}
+          {tag === ENGLISH_TAG && "English"}
+          {tag === JAPANESE_TAG && "Japanese"}
+          {tag === FRENCH_TAG && "French"}
+          {tag === SHORT_FILM_TAG && "Short Film"} Directors{" "}
+          {tag === BEFORE_2000_TAG && "Before 2000"}
+        </h2>
+
+        {persons.length !== 0 && (
           <TableContainer component={Paper} style={{ maxWidth: "800px" }}>
             <Table aria-label="simple table">
               <TableHead>
@@ -259,7 +275,7 @@ export default function TopTalentPage() {
                     <TableCell component="th" scope="row" align="center">
                       <Link
                         onClick={() => handleRowClick(person.directors_id)}
-                        style={{ color: "white", cursor: "pointer" }}
+                        style={{ color: "white", cursor: "pointer", fontWeight: "bold" }}
                       >
                         {person.primaryName}
                       </Link>
