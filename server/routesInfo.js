@@ -12,36 +12,50 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => err && console.log(err));
 
+const cache = {}
+
 /********************************
  * DISPLAY PAGE *
  ********************************/
 
 const movie = async function(req, res) {
-  connection.query(`
-    SELECT * 
-    FROM movie
-    WHERE imdb_id = '${req.params.movie_id}'
-    `, (err, data) => {
+  const queryString = `
+  SELECT * 
+  FROM movie
+  WHERE imdb_id = '${req.params.movie_id}'
+  `;
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
+  connection.query(queryString, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json({});
       } else {
+        cache[queryString] = data[0];
         res.json(data[0]);
       }
   });
 }
 
 const person = async function(req, res) {
-  connection.query(`
-    SELECT * 
-    FROM name
-    LEFT JOIN person_view on person_view.name_id = name.name_id
-    WHERE name.name_id = '${req.params.person_id}'
-    `, (err, data) => {
+  const queryString = `
+  SELECT * 
+  FROM name
+  LEFT JOIN person_view on person_view.name_id = name.name_id
+  WHERE name.name_id = '${req.params.person_id}'
+  `;
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
+  connection.query(queryString, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json({});
       } else {
+        cache[queryString] = data;
         res.json(data);
       }
   });
@@ -49,15 +63,21 @@ const person = async function(req, res) {
 
 //to be update
 const person_movies = async function(req, res) {
-  connection.query(`
+  const queryString = `
   SELECT *
   FROM person_view
   WHERE name_id = '${req.params.person_id}'
-  `, (err, data) => {
+  `;
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
+  connection.query(queryString, (err, data) => {
     if (err || data.length === 0){
       console.log(err);
       res.json([]);
     } else {
+      cache[queryString] = data;
       res.json(data);
     }
   });

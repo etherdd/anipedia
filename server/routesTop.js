@@ -12,6 +12,8 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => err && console.log(err));
 
+const cache = {}
+
 /************************
  * TOP 10 Movies *
  ************************/
@@ -99,13 +101,18 @@ const movies = async function(req, res) {
     return;
   }
 
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
   connection.query(queryString, (err, data) => {
-      if (err || data.length === 0) {
-        console.log(err);
-        res.json([]);
-      } else {
-        res.json(data);
-      }
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json([]);
+    } else {
+      cache[queryString] = data;
+      res.json(data);
+    }
   });
 }
 
@@ -207,11 +214,16 @@ const persons = async function(req, res) {
       break;
   }
 
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
   connection.query(queryString, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json([]);
       } else {
+        cache[queryString] = data;
         res.json(data);
       }
   });

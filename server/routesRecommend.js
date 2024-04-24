@@ -12,6 +12,8 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => err && console.log(err));
 
+const cache = {}
+
 /************************
  * Movie Recommend *
  ************************/
@@ -41,11 +43,17 @@ const recommendMovie = async function(req, res) {
   ORDER BY a.vote_average DESC
   LIMIT 10;`
 
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
+
   connection.query(queryString, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json([]);
     } else {
+      cache[queryString] = data;
       res.json(data);
     }
   });
@@ -72,11 +80,16 @@ const recommendDirector = async function(req, res) {
      LIMIT 10)
 SELECT directors_id, vote, primaryName FROM TOP_10_DIRECTORS t JOIN name n ON t.directors_id = n.name_id;`
 
+  if (queryString in cache) {
+    console.log("Found result from cache");
+    return res.json(cache[queryString]);
+  }
   connection.query(queryString, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json([]);
     } else {
+      cache[queryString] = data;
       res.json(data);
     }
   });
