@@ -6,6 +6,7 @@ const routesTop = require('./routesTop');
 const routesSearch = require('./routesSearch');
 const routesComment = require('./routesComment');
 const routesLike = require('./routesLike');
+const routesRecommend = require('./routesRecommend');
 
 const app = express();
 app.use(cors({
@@ -50,6 +51,16 @@ app.get('/movie/:movie_id/comment', routesComment.getComment);
  ********************************/
 app.post('/movie/:movie_id/like', routesLike.postLike);
 app.get('/movie/:movie_id/like', routesLike.getLike);
+
+/********************************
+ * Movie Recommend *
+ ********************************/
+app.get('/user/:user_id/movie_for_you', routesRecommend.recommendMovie);
+
+/********************************
+ * Director Recommend *
+ ********************************/
+app.get('/user/:user_id/director_for_you', routesRecommend.recommendDirector);
 
 
 app.listen(config.server_port, () => {

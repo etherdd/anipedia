@@ -7,11 +7,12 @@ import './HomePage.css';
 export default function HomePage() {
   const [animationDuration, setAnimationDuration] = useState(30);
 
-  const slides = [
+  const slides = [  
     { src: "https://image.tmdb.org/t/p/w1280/9DUAR7p4SGqt2ISH2lmSzNx3uni.jpg", year: 2006 },
-    { src: "https://image.tmdb.org/t/p/w1280/yDaMQbBfyGzGWKxUsPMxzWVuJlY.jpg", year: 1994 },
+    { src: "https://image.tmdb.org/t/p/w1280/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", year: 2016 },
     { src: "https://image.tmdb.org/t/p/w1280/fydUcbkqLyESCFa9U5XKqi8dIVj.jpg", year: 2013 },
-    { src: "https://image.tmdb.org/t/p/w1280/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", year: 2016 }    
+    { src: "https://image.tmdb.org/t/p/w1280/fxYazFVeOCHpHwuqGuiqcCTw162.jpg", year: 1988 }, 
+    { src: "https://image.tmdb.org/t/p/w1280/yDaMQbBfyGzGWKxUsPMxzWVuJlY.jpg", year: 1994 }, 
   ]
 
   useEffect(() => {
@@ -74,8 +75,10 @@ export default function HomePage() {
       <p className="welcome-text">
         Welcome to the world of animation.
       </p>
-
-      <SearchComponent />
+      <p className="welcome-text">
+        <SearchComponent />
+      </p>
+      
 
       {/* background slideshow */}
       <div className="slideshow">

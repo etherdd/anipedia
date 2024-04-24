@@ -66,12 +66,13 @@ return (
                                   justifyContent: 'center',
                               }}
                           >
-                              <img
-                                  src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
-                                  alt={`${personData.title} movies`}
-                                  style={{width: '200px', height: '300px'}}
-                              />
-                              <h4><NavLink to={`/movie/${personData.imdb_id}`}></NavLink></h4>
+                            <NavLink to={`/movie/${personData.imdb_id}`}>
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
+                                    alt={`${personData.title} movies`}
+                                    style={{width: '200px', height: '300px'}}
+                                />
+                            </NavLink>
                           </Box>
                       </div>
                   )}
