@@ -12,7 +12,6 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => err && console.log(err));
 
-
 const search_movies = async function(req, res) {
   
   const title = req.query.title ? `%${req.query.title}%` : '%';
@@ -71,45 +70,87 @@ const search_persons = async function(req, res) {
   const runtimeMax = parseInt(req.query.runtime_max) || 30000;
   const originalLanguage = req.query.original_language || 'all';
 
+  let sqlQuery = '';
+  let queryParams = [];
+
   // Construct the SQL query with dynamic filtering
-  let sqlQuery = `
-    WITH person_selected AS
-      (
-        SELECT n.name_id, n.primaryName, c.imdb_id, c.category
-        FROM name n JOIN crew c ON n.name_id = c.name_id
-        WHERE primaryName LIKE ?
-        UNION
-        SELECT n.name_id, n.primaryName, d.imdb_id, 'director' AS category
-        FROM name n JOIN director d ON n.name_id = d.directors_id
-        WHERE primaryName LIKE ?
-        UNION
-        SELECT n.name_id, n.primaryName, w.imdb_id, 'writer' AS category
-        FROM name n JOIN writer w ON n.name_id = w.writers_id
-        WHERE primaryName LIKE ?
-      )
-    SELECT m.imdb_id AS imdb_id, name_id, primaryName, category, title, production_countries, release_date, runtime, original_language 
-    FROM person_selected p
-    JOIN movie m ON m.imdb_id = p.imdb_id
-    WHERE m.release_date BETWEEN ? AND ?
+  let sqlQueryCrew = `
+  SELECT n.name_id, n.primaryName, m.imdb_id, category, m.title, m.original_language, m.release_date, m.runtime
+    FROM name n
+    JOIN crew c ON n.name_id = c.name_id
+    JOIN movie m ON m.imdb_id = c.imdb_id
+    WHERE n.primaryName LIKE ?
+    AND m.release_date BETWEEN ? AND ?
     AND m.runtime BETWEEN ? AND ?
   `;
 
   // Query parameters for the prepared statement
-  const queryParams = [
-    name, name, name,
+  const queryParamsCrew = [
+    name,
     releaseDateStart, releaseDateEnd,
     runtimeMin, runtimeMax
   ];
 
-  if (role !== 'all') {
-    sqlQuery = sqlQuery + 'AND category = ?'
-    queryParams.push(role);
-  }
+  let sqlQueryDirector = `
+  SELECT n.name_id, n.primaryName, m.imdb_id, 'director' AS category, m.title, m.original_language, m.release_date, m.runtime
+  FROM name n
+  JOIN director d ON n.name_id = d.directors_id
+  JOIN movie m ON m.imdb_id = d.imdb_id
+  WHERE n.primaryName LIKE ?
+  AND m.release_date BETWEEN ? AND ?
+  AND m.runtime BETWEEN ? AND ?
+  `;
+  // Query parameters for the prepared statement
+  const queryParamsDirector = [
+    name,
+    releaseDateStart, releaseDateEnd,
+    runtimeMin, runtimeMax
+  ];
+  
+  let sqlQueryWriter = `
+  SELECT n.name_id, n.primaryName, m.imdb_id, 'writer' AS category, m.title, m.original_language, m.release_date, m.runtime
+  FROM name n
+  JOIN writer w ON n.name_id = w.writers_id
+  JOIN movie m ON m.imdb_id = w.imdb_id
+  WHERE n.primaryName LIKE ?
+  AND m.release_date BETWEEN ? AND ?
+  AND m.runtime BETWEEN ? AND ?
+  `;
+
+  // Query parameters for the prepared statement
+  const queryParamsWriter = [
+    name,
+    releaseDateStart, releaseDateEnd,
+    runtimeMin, runtimeMax
+  ];
 
   if (originalLanguage !== 'all') {
-    sqlQuery = sqlQuery + 'AND m.original_language = ?'
-    queryParams.push(originalLanguage);
+    sqlQueryCrew = sqlQueryCrew + 'AND m.original_language = ?';
+    sqlQueryDirector = sqlQueryDirector + 'AND m.original_language = ?';
+    sqlQueryWriter = sqlQueryWriter + 'AND m.original_language = ?';
+    queryParamsCrew.push(originalLanguage);
+    queryParamsDirector.push(originalLanguage);
+    queryParamsWriter.push(originalLanguage);
   }
+
+  if ( role === 'director') {
+    sqlQuery = sqlQueryDirector;
+    queryParams = [...queryParamsDirector];
+  } else if ( role === 'writer' ) {
+    sqlQuery = sqlQueryWriter;
+    queryParams = [...queryParamsWriter];
+  } else if ( role !== 'all' ) {
+    sqlQueryCrew = sqlQueryCrew + 'AND category = ?'
+    queryParamsCrew.push(role);
+    sqlQuery = sqlQueryCrew;
+    queryParams = [...queryParamsCrew];
+  } else {
+    sqlQuery = '(' + 
+                sqlQueryCrew + ')UNION ALL (' + 
+                sqlQueryDirector + ')UNION ALL (' + 
+                sqlQueryWriter + ') ORDER BY primaryName';
+    queryParams = [...queryParamsCrew, ...queryParamsDirector, ...queryParamsWriter]
+  };
 
   // Execute the query
   connection.query(sqlQuery, queryParams, (err, data) => {
