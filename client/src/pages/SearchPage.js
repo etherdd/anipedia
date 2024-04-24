@@ -11,6 +11,43 @@ const config = require('../config.json');
 const SEARCH_MOVIE = 0;
 const SEARCH_PERSON = 1;
 
+const languageOptions = [
+  { value: 'all', label: 'All' },
+  { value: 'en', label: 'English' },
+  { value: 'ja', label: 'Japanese' },
+  { value: 'fr', label: 'French' },
+  { value: 'ru', label: 'Russian' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'de', label: 'German' }
+];
+
+const countryOptions = [
+  { value: 'all', label: 'All' },
+  { value: 'United States of America', label: 'USA' },
+  { value: 'Japan', label: 'Japan' },
+  { value: 'Soviet Union', label: 'Soviet Union' },
+  { value: 'France', label: 'France' },
+  { value: 'Canada', label: 'Canada' },
+  { value: 'United Kingdom', label: 'United Kingdom' },
+  { value: 'Germany', label: 'Germany' },
+  { value: 'Spain', label: 'Spain' },
+  { value: 'China', label: 'China' },
+];
+
+const roleOptions = [
+  { value: 'all', label: 'all' },
+  { value: 'director', label: 'director' },
+  { value: 'writer', label: 'writer' },
+  { value: 'actor', label: 'actor' },
+  { value: 'producer', label: 'producer' },
+  { value: 'composer', label: 'composer' },
+  { value: 'editor', label: 'editor' },
+  { value: 'cinematographer', label: 'cinematographer' },
+  { value: 'production_designer', label: 'production designer' },
+  { value: 'archive_footage', label: 'archive footage' },
+  { value: 'archive_sound', label: 'archive sound' },
+];
+
 export default function SearchPage() {
 
   const [pageSize, setPageSize] = useState(10);
@@ -18,7 +55,6 @@ export default function SearchPage() {
   const [personData, setPersonData] = useState([]);
 
   const { keyword } = useParams();
-
   const [searchType, setSearchType] = useState(SEARCH_MOVIE);
 
   const [title, setTitle] = useState('');
@@ -31,8 +67,9 @@ export default function SearchPage() {
   const [maxRuntime, setMaxRuntime] = useState('');
   const [originalLanguage, setOriginalLanguage] = useState('');
 
-  useEffect(() => {
 
+
+  useEffect(() => {
     if (keyword) {
       setTitle(keyword);
       fetch(`http://${config.server_host}:${config.server_port}/search_movies?title=${keyword}`)
@@ -44,11 +81,6 @@ export default function SearchPage() {
     }
   }, [keyword]);
 
-//   if (title !== ''){useEffect(() => {
-//     // If you want to trigger a search automatically, call a function here
-//     // For example: performSearch();
-//   }, [keyword]); // This will trigger whenever the keyword changes
-// }
 
   const handleSearchChange = (event, newValue) => {
     setSearchType(newValue);
@@ -63,8 +95,6 @@ export default function SearchPage() {
     )
       .then(res => res.json())
       .then(resJson => {
-        // DataGrid expects an array of objects with a unique id.
-        // To accomplish this, we use a map with spread syntax (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
         const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
         setData(moviesWithId);
       });
@@ -80,17 +110,12 @@ export default function SearchPage() {
     )
       .then(res => res.json())
       .then(resJson => {
-        // DataGrid expects an array of objects with a unique id.
-        // To accomplish this, we use a map with spread syntax (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
         const personWithId = resJson.map((person) => ({ id: `${person.name_id}_${person.category}_${person.imdb_id}`, ...person }));
         setPersonData(personWithId);
       });
   }
 
-  // This defines the columns of the table of songs used by the DataGrid component.
-  // The format of the columns array and the DataGrid component itself is very similar to our
-  // LazyTable component. The big difference is we provide all data to the DataGrid component
-  // instead of loading only the data we need (which is necessary in order to be able to sort by column)
+
   const columns = [
     { field: 'title', headerName: 'Title', flex: 1, renderCell: (params) => (
       <NavLink style={{ color: 'white' }} to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
@@ -165,10 +190,11 @@ export default function SearchPage() {
                 onChange={(e) => setCountry(e.target.value)}
                 label="Production Country"
               >
-                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'Japan'}>Japan</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'United States'}>USA</MenuItem>
-                {/* ... other country options */}
+                {countryOptions.map(option => (
+                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
+                    {option.label}
+                </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -183,10 +209,11 @@ export default function SearchPage() {
                 onChange={(e) => setRole(e.target.value)}
                 label="Role"
               >
-                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'director'}>Director</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'writer'}>Writer</MenuItem>
-                {/* ... other country options */}
+                {roleOptions.map(option => (
+                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
+                    {option.label}
+                </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -201,10 +228,11 @@ export default function SearchPage() {
                 onChange={(e) => setOriginalLanguage(e.target.value)}
                 label="Language"
               >
-                <MenuItem style={{color: "grey"}} value={'all'}>All</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'ja'}>Japanese</MenuItem>
-                <MenuItem style={{color: "grey"}} value={'en'}>English</MenuItem>
-                {/* ... other language options */}
+                {languageOptions.map(option => (
+                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
+                    {option.label}
+                </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -264,7 +292,7 @@ export default function SearchPage() {
         {searchType === SEARCH_MOVIE && 
         <>
           <h2>Search Movie
-          {console.log(data)}
+          {/* {console.log(data)} */}
           </h2>
           <DataGrid
             rows={data}
@@ -280,7 +308,7 @@ export default function SearchPage() {
         {searchType === SEARCH_PERSON && 
         <>
           <h2>Search Person
-            {console.log(personData)}
+            {/* {console.log(personData)} */}
           </h2>
           <DataGrid
             rows={personData}
