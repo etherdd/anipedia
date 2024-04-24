@@ -58,14 +58,21 @@ export default function SearchPage() {
   const [searchType, setSearchType] = useState(SEARCH_MOVIE);
 
   const [title, setTitle] = useState('');
-  const [name, setName] = useState('');
   const [country, setCountry] = useState('');
-  const [role, setRole] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [minRuntime, setMinRuntime] = useState('');
   const [maxRuntime, setMaxRuntime] = useState('');
   const [originalLanguage, setOriginalLanguage] = useState('');
+
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
+  const [startDatePerson, setStartDatePerson] = useState('');
+  const [endDatePerson, setEndDatePerson] = useState('');
+  const [minRuntimePerson, setMinRuntimePerson] = useState('');
+  const [maxRuntimePerson, setMaxRuntimePerson] = useState('');
+  const [originalLanguagePerson, setOriginalLanguagePerson] = useState('');
+
 
 
 
@@ -104,9 +111,9 @@ export default function SearchPage() {
   const searchPerson = () => {
     fetch(`http://${config.server_host}:${config.server_port}/search_persons?name=${name}` +
       `&role=${role}` +
-      `&release_date_start=${startDate}&release_date_end=${endDate}` +
-      `&runtime_min=${minRuntime}&runtime_max=${maxRuntime}` +
-      `&original_language=${originalLanguage}`
+      `&release_date_start=${startDatePerson}&release_date_end=${endDatePerson}` +
+      `&runtime_min=${minRuntimePerson}&runtime_max=${maxRuntimePerson}` +
+      `&original_language=${originalLanguagePerson}`
     )
       .then(res => res.json())
       .then(resJson => {
@@ -181,7 +188,8 @@ export default function SearchPage() {
         }
         
         <Grid container spacing={2}  style={{ marginTop: '10px'}}>
-        {searchType === SEARCH_MOVIE && 
+        {searchType === SEARCH_MOVIE &&
+        <> 
         <Grid item xs={3}>
             <FormControl style={{ width: "100%"}} >
               <InputLabel>Production Country</InputLabel>
@@ -198,26 +206,6 @@ export default function SearchPage() {
               </Select>
             </FormControl>
           </Grid>
-          }
-
-        {searchType === SEARCH_PERSON && 
-        <Grid item xs={3}>
-            <FormControl style={{ width: "100%"}} >
-              <InputLabel>Role</InputLabel>
-              <Select 
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                label="Role"
-              >
-                {roleOptions.map(option => (
-                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
-                    {option.label}
-                </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          }          
 
           {/* Original Language Filter */}
           <Grid item xs={3}>
@@ -285,6 +273,95 @@ export default function SearchPage() {
             />
           </Grid>
 
+          </>
+          }
+
+        {searchType === SEARCH_PERSON && 
+        <>
+        <Grid item xs={3}>
+            <FormControl style={{ width: "100%"}} >
+              <InputLabel>Role</InputLabel>
+              <Select 
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                label="Role"
+              >
+                {roleOptions.map(option => (
+                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
+                    {option.label}
+                </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {/* Original Language Filter */}
+          <Grid item xs={3}>
+            <FormControl style={{ width: "100%" }}>
+              <InputLabel>Language</InputLabel>
+              <Select
+                value={originalLanguagePerson}
+                onChange={(e) => setOriginalLanguagePerson(e.target.value)}
+                label="Language"
+              >
+                {languageOptions.map(option => (
+                <MenuItem key={option.value} style={{color: "grey"}} value={option.value}>
+                    {option.label}
+                </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {/* Release Date Filter */}
+          <Grid item xs={1.5}>
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDatePerson}
+              onChange={(e) => setStartDatePerson(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ marginRight: '10px', width: "100%"  }}
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDatePerson}
+              onChange={(e) => setEndDatePerson(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ width: "100%" }}
+            />
+          </Grid>
+
+          {/* Runtime Filter */}
+          <Grid item xs={1.5}>
+            <TextField
+              label="Min Runtime"
+              type="number"
+              value={minRuntimePerson}
+              onChange={(e) => setMinRuntimePerson(e.target.value)}
+              inputProps={{ min: "0" }}
+              style={{ marginRight: '10px', width: "100%" }}
+            />
+           </Grid>
+          <Grid item xs={1.5}>
+            <TextField
+              label="Max Runtime"
+              type="number"
+              value={maxRuntimePerson}
+              onChange={(e) => setMaxRuntimePerson(Math.max(0, +e.target.value))}
+              inputProps={{ min: "0" }}
+              style={{ width: "100%"  }}
+            />
+          </Grid>
+          </>
+          }          
         </Grid>
 
                 
