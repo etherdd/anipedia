@@ -70,7 +70,7 @@ export default function Poster({ movieId }) {
             </Button>
           </div>
         ) : (
-          <p>Log in to post your comment</p>
+          <p>Log in to post your comment :P</p>
         ))}
 
       <h3>Recent Comments</h3>

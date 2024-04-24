@@ -11,9 +11,8 @@ import './MovieInfoPage.css'
 const config = require('../config.json');
 
 export default function MovieInfoPage() {
-  const { loginWithRedirect, user, isAuthenticated, isLoading } =
-    useAuth0();
-  
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = 
+    useAuth0(); // isAuthenticated indicates if user is logged in
   const { movie_id } = useParams();
   const [ movieData, setMovieData] = useState([]);
 
@@ -22,7 +21,6 @@ export default function MovieInfoPage() {
       .then(res => res.json())
       .then(resJson => setMovieData(resJson));
   }, [movie_id]);
-
 
   // For Like button
   const [liked, setLiked] = useState(false);
@@ -63,7 +61,7 @@ export default function MovieInfoPage() {
       .then(resJson => {
         console.log(resJson);
         setLiked(resJson.like)});
-  }, [user])
+  }, [user, movie_id])
 
   // Function to format release date to "YYYY-MM-DD" format
   const formatReleaseDate = (dateString) => {
