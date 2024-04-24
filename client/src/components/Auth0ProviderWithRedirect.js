@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 
 // Add component to authentication using Auth0
-// https://developer.auth0.com/resources/guides/spa/react/basic-authentication
+// Learned from https://developer.auth0.com/resources/guides/spa/react/basic-authentication
 export default function Auth0ProviderWithRedirect({ children }) {
   const navigate = useNavigate();
 
