@@ -42,8 +42,7 @@ const movie = async function(req, res) {
 const person = async function(req, res) {
   const queryString = `
   SELECT * 
-  FROM name
-  LEFT JOIN person_view on person_view.name_id = name.name_id
+  FROM person_view as name
   WHERE name.name_id = '${req.params.person_id}'
   `;
   if (queryString in cache) {
