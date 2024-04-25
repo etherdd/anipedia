@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentCard from '../components/CommentCard';
-
 import './MovieInfoPage.css'
 
 const config = require('../config.json');
@@ -79,9 +78,11 @@ export default function MovieInfoPage() {
               {movieData.title && !isLoading && (
                 <>
                   {movieData.title}
-                  <button onClick={handleLikeClick} style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "10px"}}>
-                    {liked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon style={{ color: "white" }} />}
-                  </button>
+                  {isAuthenticated &&     // If logged out, hide the like button
+                    <button onClick={handleLikeClick} style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "10px"}}>
+                      {liked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon style={{ color: "white" }} />}
+                    </button>
+                  }
                 </>
               )}
             </h2>
