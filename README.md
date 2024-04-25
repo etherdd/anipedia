@@ -1,4 +1,4 @@
-AniPedia
+# AniPedia
 
 ### Instructions to build the project
 
