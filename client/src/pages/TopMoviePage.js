@@ -26,13 +26,21 @@ export default function TopMoviePage() {
     if (rankBy === RANK_BY_USER) {
       setTag(DEFAULT_TAG);
       fetch(
-        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/user/${user.sub}/movie_for_you`
+        `${
+          process.env.NODE_ENV === "production"
+            ? config.production_server_host
+            : `${config.server_host}:${config.server_port}`
+        }/user/${user.sub}/movie_for_you`
       )
         .then((res) => res.json())
         .then((resJson) => setMovies(resJson));
     } else {
       fetch(
-        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/top_movies?rankBy=${rankBy}&tag=${tag}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? config.production_server_host
+            : `${config.server_host}:${config.server_port}`
+        }/top_movies?rankBy=${rankBy}&tag=${tag}`
       )
         .then((res) => res.json())
         .then((resJson) => setMovies(resJson));
@@ -63,11 +71,13 @@ export default function TopMoviePage() {
             label="Popularity Top 10"
             style={{ color: rankBy === RANK_BY_POPULARITY ? "white" : "grey" }}
           />
-          {isAuthenticated && <Tab
-            value={RANK_BY_USER}
-            label="For You"
-            style={{ color: rankBy === RANK_BY_USER ? "white" : "grey" }}
-          />}
+          {isAuthenticated && (
+            <Tab
+              value={RANK_BY_USER}
+              label="For You"
+              style={{ color: rankBy === RANK_BY_USER ? "white" : "grey" }}
+            />
+          )}
         </Tabs>
 
         {/* If tab is "Rating Top 10" or "Popularity Top 10", show the filtering tags */}

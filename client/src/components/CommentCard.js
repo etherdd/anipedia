@@ -8,8 +8,7 @@ import "./CommentCard.css";
 const config = require("../config.json");
 
 export default function Poster({ movieId }) {
-  const { user, isAuthenticated, isLoading } =
-    useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const [comments, setComments] = useState([]);
   const [myComment, setMyComment] = useState("");
@@ -18,7 +17,11 @@ export default function Poster({ movieId }) {
   useEffect(() => {
     if (!shouldReload) return;
     fetch(
-      `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`
+      `${
+        process.env.NODE_ENV === "production"
+          ? config.production_server_host
+          : `${config.server_host}:${config.server_port}`
+      }/movie/${movieId}/comment`
     )
       .then((res) => res.json())
       .then((resJson) => {
@@ -30,7 +33,11 @@ export default function Poster({ movieId }) {
   const handleButtonClick = async () => {
     if (myComment !== undefined && myComment !== "") {
       fetch(
-        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`,
+        `${
+          process.env.NODE_ENV === "production"
+            ? config.production_server_host
+            : `${config.server_host}:${config.server_port}`
+        }/movie/${movieId}/comment`,
         {
           method: "POST",
           headers: {

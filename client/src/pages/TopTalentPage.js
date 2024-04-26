@@ -48,13 +48,21 @@ export default function TopTalentPage() {
       if (!isAuthenticated) return;
       setTag(DEFAULT_TAG);
       fetch(
-        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/user/${user.sub}/director_for_you`
+        `${
+          process.env.NODE_ENV === "production"
+            ? config.production_server_host
+            : `${config.server_host}:${config.server_port}`
+        }/user/${user.sub}/director_for_you`
       )
         .then((res) => res.json())
         .then((resJson) => setPersons(resJson));
     } else if (rankBy === TOP_10_DIRECTORS) {
       fetch(
-        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/top_persons?tag=${tag}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? config.production_server_host
+            : `${config.server_host}:${config.server_port}`
+        }/top_persons?tag=${tag}`
       )
         .then((res) => res.json())
         .then((resJson) => setPersons(resJson));
@@ -75,11 +83,13 @@ export default function TopTalentPage() {
             label="Top 10 Directors"
             style={{ color: rankBy === TOP_10_DIRECTORS ? "white" : "grey" }}
           />
-          {isAuthenticated && <Tab
-            value={FOR_YOU}
-            label="For You"
-            style={{ color: rankBy === FOR_YOU ? "white" : "grey" }}
-          />}
+          {isAuthenticated && (
+            <Tab
+              value={FOR_YOU}
+              label="For You"
+              style={{ color: rankBy === FOR_YOU ? "white" : "grey" }}
+            />
+          )}
         </Tabs>
 
         {/* If tab is "Top 10 Directors", show the filtering tags */}
