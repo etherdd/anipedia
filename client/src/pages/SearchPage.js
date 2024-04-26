@@ -76,7 +76,7 @@ export default function SearchPage() {
   useEffect(() => {
     if (keyword) {
       setTitle(keyword);
-      fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_movies?title=${keyword}`)
+      fetch(`${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_movies?title=${keyword}`)
       .then(res => res.json())
       .then(resJson => {
         const moviesWithId = resJson.map((movie) => ({ id: movie.imdb_id, ...movie }));
@@ -91,7 +91,7 @@ export default function SearchPage() {
   };
 
   const searchMovie = () => {
-    fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_movies?title=${title}` +
+    fetch(`${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_movies?title=${title}` +
       `&production_country=${country}` +
       `&release_date_start=${startDate}&release_date_end=${endDate}` +
       `&runtime_min=${minRuntime}&runtime_max=${maxRuntime}` +
@@ -106,7 +106,7 @@ export default function SearchPage() {
 
 
   const searchPerson = () => {
-    fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_persons?name=${name}` +
+    fetch(`${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/search_persons?name=${name}` +
       `&role=${role}` +
       `&release_date_start=${startDatePerson}&release_date_end=${endDatePerson}` +
       `&runtime_min=${minRuntimePerson}&runtime_max=${maxRuntimePerson}` +

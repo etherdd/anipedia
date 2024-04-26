@@ -17,7 +17,7 @@ export default function PersonInfoPage() {
 
 
   useEffect(() => {
-    fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/person/${person_id}`)
+    fetch(`${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/person/${person_id}`)
       .then(res => res.json())
       .then(resJson => {
           setPersonData(resJson)

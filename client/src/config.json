@@ -1,5 +1,5 @@
 {
-  "server_host": "localhost",
+  "server_host": "http://localhost",
   "server_port": "8080",
-  "production_server_host": "anipedia.onrender.com"
+  "production_server_host": "https://anipedia.onrender.com"
 }

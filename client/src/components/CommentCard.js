@@ -18,7 +18,7 @@ export default function Poster({ movieId }) {
   useEffect(() => {
     if (!shouldReload) return;
     fetch(
-      `http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`
+      `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`
     )
       .then((res) => res.json())
       .then((resJson) => {
@@ -30,7 +30,7 @@ export default function Poster({ movieId }) {
   const handleButtonClick = async () => {
     if (myComment !== undefined && myComment !== "") {
       fetch(
-        `http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`,
+        `${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movieId}/comment`,
         {
           method: "POST",
           headers: {
