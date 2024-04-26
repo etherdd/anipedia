@@ -4,7 +4,6 @@
     "@mui/utils": "^5.15.14"
   },
   "scripts": {
-    "start": "npm start --prefix server",
-    "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install && cd .."
+    "start": "npm start --prefix server"
   }
 }

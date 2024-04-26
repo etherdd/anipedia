@@ -68,7 +68,7 @@ app.get('*', function (req, res) {
 })
 
 app.listen(config.server_port, () => {
-  console.log(`Server running at http://${config.server_host}:${config.server_port}/`)
+  console.log(`Server running at http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/`)
 });
 
 module.exports = app;

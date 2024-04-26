@@ -26,13 +26,13 @@ export default function TopMoviePage() {
     if (rankBy === RANK_BY_USER) {
       setTag(DEFAULT_TAG);
       fetch(
-        `http://${config.server_host}:${config.server_port}/user/${user.sub}/movie_for_you`
+        `http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/user/${user.sub}/movie_for_you`
       )
         .then((res) => res.json())
         .then((resJson) => setMovies(resJson));
     } else {
       fetch(
-        `http://${config.server_host}:${config.server_port}/top_movies?rankBy=${rankBy}&tag=${tag}`
+        `http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/top_movies?rankBy=${rankBy}&tag=${tag}`
       )
         .then((res) => res.json())
         .then((resJson) => setMovies(resJson));
