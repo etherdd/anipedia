@@ -48,13 +48,13 @@ export default function TopTalentPage() {
       if (!isAuthenticated) return;
       setTag(DEFAULT_TAG);
       fetch(
-        `http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/user/${user.sub}/director_for_you`
+        `http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/user/${user.sub}/director_for_you`
       )
         .then((res) => res.json())
         .then((resJson) => setPersons(resJson));
     } else if (rankBy === TOP_10_DIRECTORS) {
       fetch(
-        `http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/top_persons?tag=${tag}`
+        `http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/top_persons?tag=${tag}`
       )
         .then((res) => res.json())
         .then((resJson) => setPersons(resJson));

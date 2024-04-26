@@ -16,7 +16,7 @@ export default function MovieInfoPage() {
   const [ movieData, setMovieData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/movie/${movie_id}`)
+    fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movie_id}`)
       .then(res => res.json())
       .then(resJson => setMovieData(resJson));
   }, [movie_id]);
@@ -34,7 +34,7 @@ export default function MovieInfoPage() {
     }
 
     fetch(
-      `http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/movie/${movie_id}/like`,
+      `http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movie_id}/like`,
       {
         method: "POST",
         headers: {
@@ -55,7 +55,7 @@ export default function MovieInfoPage() {
 
   useEffect(() => {
     if (user === undefined || user.sub === undefined) return;
-    fetch(`http://${process.env.SERVER_HOST || config.server_host}:${config.server_port}/movie/${movie_id}/like?user_id=${user.sub}`)
+    fetch(`http://${process.env.NODE_ENV === 'production' ? config.production_server_host : config.server_host}:${config.server_port}/movie/${movie_id}/like?user_id=${user.sub}`)
       .then(res => res.json())
       .then(resJson => {
         console.log(resJson);
