@@ -7,7 +7,7 @@ export default function Backdrop({ movie }) {
 
   return (
     <div className="group-block">
-      <NavLink to={`/movie/${movie.imdb_id}`}>
+      <NavLink to={`/movie-info/${movie.imdb_id}`}>
         <div className="">
           <img
             src={backdropPath}

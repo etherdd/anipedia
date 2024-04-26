@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const config = require('./config');
 const routesInfo = require('./routesInfo');
 const routesTop = require('./routesTop');
@@ -13,6 +14,9 @@ app.use(cors({
   origin: '*',
 }));
 
+// Follow https://create-react-app.dev/docs/deployment/ to deploy
+app.use(express.static(path.join(__dirname, '../client/build')));
+
 // Required to parse request body: https://stackoverflow.com/questions/11625519/how-to-access-the-request-body-when-posting-using-node-js-and-express
 app.use(express.json());
 
@@ -22,10 +26,6 @@ app.use(express.json());
 //info
 app.get('/movie/:movie_id', routesInfo.movie);
 app.get('/person/:person_id', routesInfo.person,routesInfo.person_movies);
-// app.get('/person/:person_id', routesInfo.person_movies);
-//movies from the chosen person
-// app.get('/person_movies/:person_id', routesInfo.person_movies);
-//TO BE ADDED
 
 /********************************
  * top 10 *
@@ -62,6 +62,10 @@ app.get('/user/:user_id/movie_for_you', routesRecommend.recommendMovie);
  ********************************/
 app.get('/user/:user_id/director_for_you', routesRecommend.recommendDirector);
 
+// Catch all non-API request and return the front end file
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
+})
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`)

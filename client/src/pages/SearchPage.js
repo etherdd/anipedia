@@ -125,7 +125,7 @@ export default function SearchPage() {
 
   const columns = [
     { field: 'title', headerName: 'Title', flex: 1, renderCell: (params) => (
-      <NavLink style={{ color: 'white' }} to={`/movie/${params.row.imdb_id}`}>{params.value}</NavLink>
+      <NavLink style={{ color: 'white' }} to={`/movie-info/${params.row.imdb_id}`}>{params.value}</NavLink>
     )},
     { field: 'production_countries', width: 150, headerName: 'Country' },
     { field: 'original_language',  width: 100, headerName: 'Language' },
@@ -136,7 +136,7 @@ export default function SearchPage() {
   if (searchType === SEARCH_PERSON){
     columns.splice(1,1);
     const nameColumn = { field: 'primaryName', headerName: 'Name', flex:0.5, renderCell: (params) => (
-      <NavLink style={{ color: 'white' }} to={`/person/${params.row.name_id}`}>{params.value}</NavLink>
+      <NavLink style={{ color: 'white' }} to={`/person-info/${params.row.name_id}`}>{params.value}</NavLink>
     )}
     const categoryColumn = { field: 'category', headerName: 'Role', flex:0.3};
     columns.unshift(categoryColumn);

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { indigo, amber, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 import NavBar from "./components/NavBar";
@@ -86,7 +86,7 @@ export default function App() {
               }
             />
             <Route
-              path="/movie/:movie_id"
+              path="/movie-info/:movie_id"
               element={
                 <>
                   <NavBar />
@@ -95,7 +95,7 @@ export default function App() {
               }
             />
             <Route
-              path="/person/:person_id"
+              path="/person-info/:person_id"
               element={
                 <>
                   <NavBar />

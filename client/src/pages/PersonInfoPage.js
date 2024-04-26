@@ -66,7 +66,7 @@ return (
                                   justifyContent: 'center',
                               }}
                           >
-                            <NavLink to={`/movie/${personData.imdb_id}`}>
+                            <NavLink to={`/movie-info/${personData.imdb_id}`}>
                                 <img
                                     src={`https://image.tmdb.org/t/p/w1280/${personData.poster_path}`}
                                     alt={`${personData.title} movies`}

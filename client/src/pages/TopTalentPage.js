@@ -39,7 +39,7 @@ export default function TopTalentPage() {
   };
 
   const handleRowClick = (directorId) => {
-    navigate(`/person/${directorId}`);
+    navigate(`/person-info/${directorId}`);
   };
 
   useEffect(() => {
