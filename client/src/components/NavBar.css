@@ -9,58 +9,44 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    ul li {
-        position: relative;
-        list-style: none;
-        display: inline-block;
-        margin: 0 2vw;
-
-        a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        ::after {
-            content: '';
-            height: 1px;
-            width: 0;
-            background: white;
-            position: absolute;
-            left: 0;
-            bottom: 3px;
-            transition: 0.5s;
-        }
-        :hover::after {
-            width: 100%;
-        }
-    }
 }
 
-.navbar ul li.navbar-selected-li {
-    position: relative;
+.navbar ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar ul li {
+    position: relative;
     display: inline-block;
     margin: 0 2vw;
+}
 
-    a {
-        text-decoration: none;
-        color: white;
-        font-size: 18px;
-    }
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
 
-    ::after {
-        content: '';
-        height: 1px;
-        width: 100%;
-        background: white;
-        position: absolute;
-        left: 0;
-        bottom: 3px;
-        transition: 0.5s;
-    }
+.navbar ul li::after {
+    content: '';
+    height: 1px;
+    width: 0;
+    background: white;
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+    transition: 0.5s;
+}
+
+.navbar ul li:hover:after {
+    width: 100%;
+}
+
+.navbar ul li.navbar-selected-li::after {
+    width: 100%;
 }
 
 .logo {

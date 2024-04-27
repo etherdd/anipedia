@@ -24,6 +24,7 @@ export default function TopMoviePage() {
 
   useEffect(() => {
     if (rankBy === RANK_BY_USER) {
+      setMovies([]);
       setTag(DEFAULT_TAG);
       fetch(
         `${
@@ -35,6 +36,7 @@ export default function TopMoviePage() {
         .then((res) => res.json())
         .then((resJson) => setMovies(resJson));
     } else {
+      setMovies([]);
       fetch(
         `${
           process.env.NODE_ENV === "production"

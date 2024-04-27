@@ -57,6 +57,7 @@ export default function TopTalentPage() {
         .then((res) => res.json())
         .then((resJson) => setPersons(resJson));
     } else if (rankBy === TOP_10_DIRECTORS) {
+      setPersons([]);
       fetch(
         `${
           process.env.NODE_ENV === "production"
