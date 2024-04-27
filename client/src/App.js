@@ -13,6 +13,7 @@ import MovieInfoPage from "./pages/MovieInfoPage";
 import Auth0ProviderWithRedirect from "./components/Auth0ProviderWithRedirect";
 
 import "./App.css";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // createTheme enables you to customize the look and feel of your app past the default
 // in this case, we only change the color scheme
@@ -100,6 +101,15 @@ export default function App() {
                 <>
                   <NavBar />
                   <PersonInfoPage />
+                </>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <>
+                  <NavBar />
+                  <NotFoundPage />
                 </>
               }
             />

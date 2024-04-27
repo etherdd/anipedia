@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Container,
-  Link,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Container } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
