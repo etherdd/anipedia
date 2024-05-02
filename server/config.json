@@ -1,8 +1,8 @@
 {
-  "rds_host": "database-upenn.cbk8soy6aqvz.us-east-2.rds.amazonaws.com",
+  "rds_host": "database-1.cj6wi2q6o1s4.us-east-1.rds.amazonaws.com",
   "rds_port": "3306",
-  "rds_user": "admin",
-  "rds_password": "Msliu712",
+  "rds_user": "etherD",
+  "rds_password": "Ethersql",
   "rds_db": "ANIMATION",
   "server_host": "localhost",
   "server_port": "8080",

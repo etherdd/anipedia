@@ -12,6 +12,10 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => err && console.log(err));
 
+/************************
+ * Search movie *
+ ************************/
+
 const search_movies = async function(req, res) {
   
   const title = req.query.title ? `%${req.query.title}%` : '%';
@@ -60,6 +64,10 @@ const search_movies = async function(req, res) {
     }
   });
 }
+
+/************************
+ * Search person *
+ ************************/
 
 const search_persons = async function(req, res) {
   const name = req.query.name ? `%${req.query.name}%` : '%';
