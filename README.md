@@ -2,7 +2,7 @@
 
 https://anipedia.onrender.com (deployed to [Render.com](https://render.com))
 
-Project report : https://drive.google.com/drive/folders/1Bwsg1LnoP3vpVSeL0zAJ_96AH2Dkm39_?usp=sharing
+Project report : https://docs.google.com/document/d/12_rfPqEtAd6BVuTxdFj1ooHwVm-8GLVXmMx0safI9f0/edit?usp=sharing
 
 ### Instructions to build the project locally
 
