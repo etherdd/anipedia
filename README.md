@@ -1,6 +1,7 @@
 # AniPedia
 
 https://anipedia.onrender.com (deployed to [Render.com](https://render.com))
+Project report: https://drive.google.com/drive/folders/1Bwsg1LnoP3vpVSeL0zAJ_96AH2Dkm39_?usp=sharing
 
 ### Instructions to build the project locally
 
@@ -19,3 +20,4 @@ https://anipedia.onrender.com (deployed to [Render.com](https://render.com))
 1. `git push`
 2. Render will automatically pick the latest change to deploy
 3. Visit https://anipedia.onrender.com to see the result
+
